@@ -6,6 +6,7 @@
 package com.sp1d.dvdshare.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.log.MLevel;
 import java.net.MalformedURLException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -47,6 +48,7 @@ public class RootConfig {
         ComboPooledDataSource ds = new ComboPooledDataSource();
         LOG.debug("DataSource is set: {}", ds);
 //        DatabasePopulatorUtils.execute(databasePopulator(), ds);
+//        com.mchange.v2.log.MLog.getLogger().setLevel(MLevel.OFF);
         return ds;
     }
 

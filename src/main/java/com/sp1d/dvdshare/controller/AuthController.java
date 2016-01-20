@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -32,8 +33,11 @@ public class AuthController {
     private static final Logger LOG = LogManager.getLogger(AuthController.class);
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
-    String showLoginPage() {
+    String showLoginPage(@RequestParam(value = "error", required = false) String error, Model model) {
         LOG.debug("entering controller at GET /login");
+        if (error != null) {
+            model.addAttribute("error", "Wrong login or password");
+        }
         return "login";
     }
 

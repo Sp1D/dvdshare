@@ -14,3 +14,12 @@
     color: #ff6600;
 }
 
+table.tbl-mydisks .id {
+    width: 1%;
+    white-space: nowrap;
+}
+
+table.tbl-mydisks .holder {
+    width: 1%;
+    white-space: nowrap;
+}

@@ -31,8 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .withUser("admin").password("admin");
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("SELECT user_email, user_password, user_enabled FROM user WHERE user_name=?")
-                .authoritiesByUsernameQuery("SELECT user_email, 'ROLE_USER' FROM user WHERE user_name=?")
+                .usersByUsernameQuery("SELECT user_email, user_password, user_enabled FROM users WHERE user_email=?")
+                .authoritiesByUsernameQuery("SELECT user_email, 'ROLE_USER' FROM users WHERE user_email=?")
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -40,13 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/register", "/login", "/static/**").anonymous()
-                .antMatchers(HttpMethod.POST, "/register").anonymous()
+                .antMatchers(HttpMethod.GET, "/register", "/login", "/static/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .anyRequest().authenticated()
-                .and()
+                    .and()
                 .formLogin()
                 .usernameParameter("email")
-                .loginPage("/login");
+                .loginPage("/login")
+                .defaultSuccessUrl("/");
+
     }
 
     @Bean

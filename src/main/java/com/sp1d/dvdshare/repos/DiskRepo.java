@@ -29,6 +29,12 @@ public class DiskRepo {
         return q.getResultList();
     }
 
+    public List<Disk> findAllByOwner(User u) {
+        Query q = em.createQuery("SELECT d FROM Disk d WHERE d.owner = :user");
+        q.setParameter("user", u);
+        return q.getResultList();
+    }
+
     public Disk add(Disk t) {
         em.persist(t);
         return em.merge(t);

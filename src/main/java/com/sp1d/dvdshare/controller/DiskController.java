@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/disk")
 public class DiskController {
+
+//    TODO Добавить к диску поле - тип диска
 
     @Autowired
     DiskService diskService;
@@ -32,10 +36,17 @@ public class DiskController {
     }
 
     @RequestMapping(path = "create", method = RequestMethod.POST)
-    String create(Disk disk, User user) {
-        disk.setOwner(user);
-        disk.setHolder(user);
-        diskService.add(disk);
-        return "disk_create";
+    @ResponseBody Disk create(@RequestParam String title) {
+        User test = new User();
+        test.setUsername("TEST");
+        test.setId(1);
+        test.setEmail("asdasd@sdfsdfe");
+
+        Disk disk = new Disk();
+        disk.setTitle(title);
+        disk.setOwner(test);
+        disk.setHolder(test);
+        disk = diskService.add(disk);
+        return disk;
     }
 }

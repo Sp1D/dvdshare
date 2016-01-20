@@ -51,8 +51,8 @@ public class User {
     @Transient
     private String plainPasswordCheck;
 
-    @Column(name = "user_enabled")
-    private String enabled;
+    @Column(name = "user_enabled", nullable = false)
+    private boolean enabled;
 
     @OneToMany(mappedBy = "owner")
     private List<Disk> ownDisks;
@@ -112,11 +112,11 @@ public class User {
         this.plainPasswordCheck = plainPasswordCheck;
     }
 
-    public String getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(String enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -159,5 +159,12 @@ public class User {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", enabled=" + enabled + '}';
+    }
+
+
 
 }

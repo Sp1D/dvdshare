@@ -26,11 +26,11 @@ public class UserController {
 
     @Autowired UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    String userList(Model model) {
-        model.addAttribute("users", userService.getAll());
-        return "users";
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    String userList(Model model) {
+//        model.addAttribute("users", userService.getAll());
+//        return "users";
+//    }
 
     @RequestMapping(value = "new", method = RequestMethod.GET)
     String userNew(Model model) {

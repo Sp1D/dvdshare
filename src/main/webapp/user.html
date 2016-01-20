@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>[Username] - dvdshare</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">        
+        <link rel="stylesheet" href="/static/css/dvdshare.css">
+        <script>
+            var contextPath = '<%= contextPath%>';
+        </script> 
+        <script src="/static/js/jquery-1.12.0.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>        
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <h1>Hello,<br>[Username]!</h1>
+                <table class="table tbl-mydisks">
+                    <thead>
+                        <tr>
+                            <th class="id">#/Available</th>
+                            <th>Title</th>                            
+                            <th class="holder">Holder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="id">1</td>
+                            <td>Favorite movies</td>
+                            <td class="holder">Me</td>
+                        </tr>
+                        <tr>
+                            <td class="id">2</td>
+                            <td>Favorite music</td>
+                            <td class="holder">Me</td>
+                        </tr>
+                        <tr>
+                            <td class="id">3</td>
+                            <td>Different small games</td>
+                            <td class="holder">John Snow</td>
+                        </tr>
+                    </tbody>    
+                </table>
+                <button class="btn btn-success" data-toggle="modal" data-target="#modal-adddisk">Add new disk</button>
+                
+                <div id="modal-adddisk" class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="gridSystemModalLabel">Add new disk</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form id="form-adddisk" method="POST" action="/disk/add">
+                                    <div class="form-group">
+                                        Disk title<br>
+                                        <input type="text" class="form-control" name="title">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="btn-add-disk" type="submit" class="btn btn-success" form="form-adddisk">Add</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

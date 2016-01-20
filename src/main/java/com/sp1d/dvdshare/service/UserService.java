@@ -8,6 +8,8 @@ package com.sp1d.dvdshare.service;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.repos.UserRepo;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -27,17 +29,24 @@ public class UserService {
 
     @Autowired PasswordEncoder passwordEncoder;
 
+    private static final Logger LOG = LogManager.getLogger(UserService.class);
+
 
     public List<User> getAll() {
+        LOG.debug("finding all users");
         return userRepo.findAll();
     }
 
     public User findByUsername(String username) {
-        return userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
+        LOG.debug("finding user by username, found {}", user);
+        return user;
     }
 
     public User findByEmail(String email) {
-        return userRepo.findByEmail(email);
+        User user = userRepo.findByEmail(email);
+        LOG.debug("finding user by email, found {}", user);
+        return user;
     }
 
     public User add(User user) {
@@ -45,12 +54,17 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPlainPassword()));
             user.setPlainPassword(null);
             user.setPlainPasswordCheck(null);
+            user.setEnabled(true);
         }
-        return userRepo.add(user);
+        User persistedUser = userRepo.add(user);
+        LOG.debug("adding user {}", persistedUser);
+        return persistedUser;
     }
 
     public User save(User user) {
-        return userRepo.save(user);
+        User savedUser = userRepo.save(user);
+        LOG.debug("saving user {}", savedUser);
+        return savedUser;
     }
 
 }

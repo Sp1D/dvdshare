@@ -6,6 +6,10 @@
 package com.sp1d.dvdshare.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,13 +38,15 @@ public class Disk {
     @Column(name = "disk_id", nullable = false)
     private long id;
 
-    @Column(name = "disk_name", nullable = false)
-    private String name;
+    @Column(name = "disk_title", nullable = false)
+    private String title;
 
+    @JsonSerialize(using = UserSerializer.class)
     @ManyToOne
     @JoinColumn(name = "disk_owner", nullable = false)
     private User owner;
 
+    @JsonSerialize(using = UserSerializer.class)
     @ManyToOne
     @JoinColumn(name = "disk_holder", nullable = false)
     private User holder;
@@ -57,12 +63,12 @@ public class Disk {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public User getOwner() {
@@ -80,8 +86,8 @@ public class Disk {
     public void setHolder(User holder) {
         this.holder = holder;
     }
-
-
-
+public enum Field {
+    ID, TITLE, OWNER, HOLDER
+}
 
 }
