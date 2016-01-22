@@ -26,10 +26,6 @@ public class UserRepo {
         return em.createQuery("SELECT u FROM User u").getResultList();
     }
 
-    public List<User> getAll() {
-        return findAll();
-    }
-
     public User findById(long id) {
         return em.find(User.class, id);
     }

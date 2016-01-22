@@ -19,7 +19,33 @@ table.tbl-mydisks .id {
     white-space: nowrap;
 }
 
-table.tbl-mydisks .holder {
+table.tbl-mydisks .request {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+table.tbl-mydisks .holder, .owner {
     width: 1%;
     white-space: nowrap;
 }
+
+table.tbl-users .id {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.icon-green {
+    color:  #66cc00;
+}
+
+.icon-red {
+    color:  #ff3300;
+}
+
+/* Override of bootstrap class */
+.page-header { 
+    border-bottom: none;
+}
+
+

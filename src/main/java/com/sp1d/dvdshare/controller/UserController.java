@@ -5,43 +5,105 @@
  */
 package com.sp1d.dvdshare.controller;
 
+import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.User;
-import com.sp1d.dvdshare.repos.UserRepo;
+import com.sp1d.dvdshare.service.DiskSelection;
+import com.sp1d.dvdshare.service.DiskService;
 import com.sp1d.dvdshare.service.UserService;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author sp1d
  */
 @Controller
-@RequestMapping(value = "/users")
 public class UserController {
 
-    @Autowired UserService userService;
+    @Autowired
+    UserService userService;
 
-//    @RequestMapping(method = RequestMethod.GET)
-//    String userList(Model model) {
-//        model.addAttribute("users", userService.getAll());
-//        return "users";
-//    }
+    @Autowired
+    DiskService diskService;
 
-    @RequestMapping(value = "new", method = RequestMethod.GET)
-    String userNew(Model model) {
-        model.addAttribute("user", new User());
-        return "usercreate";
+    private static final Logger LOG = LogManager.getLogger(UserController.class);
+
+    @RequestMapping(path = "/users", method = RequestMethod.GET)
+    String showAllUsers(Model model) {
+        LOG.debug("entering controller at GET /users");
+        model.addAttribute("users", userService.findAll());
+        return "users";
     }
 
-    @RequestMapping(value = "new", method = RequestMethod.POST)
-    ModelAndView userAdd(User user, Model model) {
-        User saved = userService.add(user);
-        model.addAttribute("user", saved);
-        return new ModelAndView("redirect:/disk/create", "usermodel", model);
+    @RequestMapping(path = "/user/{id}", method = RequestMethod.GET)
+    String showUser(@PathVariable long id, Model model) {
+        LOG.debug("entering controller at GET /user/{id}");
+        setModel(id, model, null);
+        return "user";
     }
+
+    @RequestMapping(path = "/user/{id}/{whose}", method = RequestMethod.GET)
+    String showUser(@PathVariable long id, @PathVariable String whose, Model model) {
+        LOG.debug("entering controller at GET /user/{id}");
+        setModel(id, model, whose);
+        return "user";
+    }
+
+    @RequestMapping(path = "/user/self", method = RequestMethod.GET)
+    String showHomePage(Model model, HttpServletRequest req) {
+        LOG.debug("entering controller at GET /user/self");
+        setModel(req, model, null);
+        return "home";
+    }
+
+    @RequestMapping(path = "/user/self/{whose}", method = RequestMethod.GET)
+    String showHomeTabs(@PathVariable String whose, Model model, HttpServletRequest req) {
+        LOG.debug("entering controller at GET /user/self/{whose}");
+        setModel(req, model, whose);
+        return "home";
+    }
+
+    private Model setModel(long id, Model model, String whose) {
+        User user = userService.findById(id);
+        return setModel(user, model, whose);
+    }
+
+    private Model setModel(HttpServletRequest req, Model model, String whose) {
+        User user = null;
+        if (req.getUserPrincipal() != null) {
+            user = userService.findByEmail(req.getUserPrincipal().getName());
+        }
+        return setModel(user, model, whose);
+    }
+
+    private Model setModel(User user, Model model, String whose) {
+        if (user != null) {
+            List<Disk> disks;
+            DiskSelection selection;
+            if (whose != null) {
+                try {
+                    selection = DiskSelection.valueOf(whose.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    selection = DiskSelection.OWN;
+                }
+            } else {
+                selection = DiskSelection.OWN;
+            }
+
+            disks = diskService.findByUser(selection, user);
+            model.addAttribute("selection", selection.toString());
+            model.addAttribute("user", user);
+            model.addAttribute("disks", disks);
+        }
+        return model;
+    }
+
 }

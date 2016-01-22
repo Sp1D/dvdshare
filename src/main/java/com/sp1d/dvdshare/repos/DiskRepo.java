@@ -7,8 +7,11 @@ package com.sp1d.dvdshare.repos;
 
 import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.User;
+import com.sp1d.dvdshare.service.DiskSelection;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
@@ -23,15 +26,9 @@ public class DiskRepo {
     @PersistenceContext
     EntityManager em;
 
-    public List<Disk> findAllByHolder(User u) {
-        Query q = em.createQuery("SELECT d FROM Disk d WHERE d.holder = :user");
-        q.setParameter("user", u);
-        return q.getResultList();
-    }
-
-    public List<Disk> findAllByOwner(User u) {
-        Query q = em.createQuery("SELECT d FROM Disk d WHERE d.owner = :user");
-        q.setParameter("user", u);
+    public List<Disk> findByUser(DiskSelection dataSelection, User user) {
+        Query q = em.createNamedQuery(dataSelection.toString());
+        q.setParameter("user", user);
         return q.getResultList();
     }
 

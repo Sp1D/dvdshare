@@ -32,9 +32,15 @@ public class UserService {
     private static final Logger LOG = LogManager.getLogger(UserService.class);
 
 
-    public List<User> getAll() {
+    public List<User> findAll() {
         LOG.debug("finding all users");
         return userRepo.findAll();
+    }
+
+    public User findById(long id) {
+        User user = userRepo.findById(id);
+        LOG.debug("finding user by ID, found {}", user);
+        return user;
     }
 
     public User findByUsername(String username) {

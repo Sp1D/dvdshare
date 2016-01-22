@@ -5,20 +5,17 @@
  */
 package com.sp1d.dvdshare.entities;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 /**
  *
@@ -26,7 +23,9 @@ import org.springframework.core.env.Environment;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable{
+    private static final long serialVersionUID = -4674771583377131450L;
+    
 
     @Transient
     private static final Logger LOG = LogManager.getLogger(User.class);
@@ -53,12 +52,6 @@ public class User {
 
     @Column(name = "user_enabled", nullable = false)
     private boolean enabled;
-
-    @OneToMany(mappedBy = "owner")
-    private List<Disk> ownDisks;
-
-    @OneToMany(mappedBy = "holder")
-    private List<Disk> holdenDisks;
 
     public User() {
         LOG.debug("Constructed {}", this.toString());
@@ -120,24 +113,6 @@ public class User {
         this.enabled = enabled;
     }
 
-    public List<Disk> getOwnDisks() {
-        return ownDisks;
-    }
-
-    public void setOwnDisks(List<Disk> ownDisks) {
-        this.ownDisks = ownDisks;
-    }
-
-    public List<Disk> getHoldenDisks() {
-        return holdenDisks;
-    }
-
-    public void setHoldenDisks(List<Disk> holdenDisks) {
-        this.holdenDisks = holdenDisks;
-    }
-
-
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -162,7 +137,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", enabled=" + enabled + '}';
+        return "User{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + "secret" + ", enabled=" + enabled + '}';
     }
 
 

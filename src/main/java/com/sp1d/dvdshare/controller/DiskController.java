@@ -8,6 +8,8 @@ package com.sp1d.dvdshare.controller;
 import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.DiskService;
+import com.sp1d.dvdshare.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DiskController {
 
 //    TODO Добавить к диску поле - тип диска
-
     @Autowired
     DiskService diskService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping(path = "create", method = RequestMethod.GET)
     String create(Model model) {
@@ -36,17 +40,19 @@ public class DiskController {
     }
 
     @RequestMapping(path = "create", method = RequestMethod.POST)
-    @ResponseBody Disk create(@RequestParam String title) {
-        User test = new User();
-        test.setUsername("TEST");
-        test.setId(1);
-        test.setEmail("asdasd@sdfsdfe");
-
+    @ResponseBody
+    Disk create(@RequestParam String title, HttpServletRequest req) {
+        User user;
         Disk disk = new Disk();
-        disk.setTitle(title);
-        disk.setOwner(test);
-        disk.setHolder(test);
-        disk = diskService.add(disk);
+        if (req.getUserPrincipal() != null) {
+            user = userService.findByEmail(req.getUserPrincipal().getName());
+            if (user != null) {
+                disk.setTitle(title);
+                disk.setOwner(user);
+                disk.setHolder(user);
+                disk = diskService.add(disk);
+            }
+        }
         return disk;
     }
 }

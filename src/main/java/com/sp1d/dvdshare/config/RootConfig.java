@@ -18,8 +18,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -52,34 +54,27 @@ public class RootConfig {
         return ds;
     }
 
-    private DatabasePopulator databasePopulator() throws IllegalStateException, MalformedURLException {
+    private DatabasePopulator databasePopulator() {
         ResourceDatabasePopulator rdp = new ResourceDatabasePopulator();
-        rdp.setContinueOnError(true);
-        try {
-            rdp.addScript(new UrlResource(env.getRequiredProperty("db.schema.initial")));
-            rdp.addScript(new UrlResource(env.getRequiredProperty("db.schema.exampledata")));
-        } catch (MalformedURLException | IllegalStateException e) {
-            LOG.error("Can not read db initial scripts");
-            throw e;
-        }
+//        rdp.setContinueOnError(true);
+        rdp.addScript(new ClassPathResource(env.getRequiredProperty("db.schema.initial")));
+        rdp.addScript(new ClassPathResource(env.getRequiredProperty("db.schema.exampledata")));
         return rdp;
     }
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-
         HibernateJpaVendorAdapter va = new HibernateJpaVendorAdapter();
         va.setDatabase(Database.HSQL);
         va.setDatabasePlatform("org.hibernate.dialect.HSQLDialect");
-        va.setGenerateDdl(true);
+//        va.setGenerateDdl(true);
         va.setShowSql(true);
         emf.setJpaVendorAdapter(va);
 
         emf.setDataSource(dataSource());
         emf.setPackagesToScan("com.sp1d.dvdshare.entities");
         emf.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
-
 
         return emf;
     }

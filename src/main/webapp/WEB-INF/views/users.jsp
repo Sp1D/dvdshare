@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${user.username} - dvdshare</title>
+        <title>All users - dvdshare</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="<c:url value='/static/img/favicon.png'/>">
@@ -16,57 +16,42 @@
                 <div class="container-fluid">
                     <ul class="nav navbar-nav">
                         <li><a href="<c:url value='/user/self'/>">Home</a></li>
-                        <li class="active"><a href="<c:url value='/users'/>">Other users</a></li>                            
+                        <li class="active"><a href="<c:url value='/users'/>">Other users</a></li>         
                     </ul>
-
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="<c:url value='/logout'/>">Logout</a></li>                            
                     </ul>
                 </div>
             </nav>
             <div class="page-header">
-                <h1>${user.username}</h1>
-                <p>Want to <a href="<c:url value="/user/${user.id}/hold"/>">request some of his disks</a> ?</p>
+                <h1>Users list</h1>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
-                <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/${user.id}/own"/>">His own disks</a></li>
-                <li id="tab-hold" role="presentation"><a href="<c:url value="/user/${user.id}/hold"/>">Disks on hands</a></li>                
+                <li id="tab-allusers" role="presentation" class="active"><a href="#">All users</a></li>                
             </ul>
-            <table class="table tbl-mydisks">
+            <table class="table tbl-users">
                 <thead>
                     <tr>
                         <th class="id">#</th>
-                        <th class="request">Request</th>                        
-                        <th>Title</th>                            
-                        <th class="owner">Owner</th>
-                        <th class="holder">Holder</th>
+                        <th>Username</th>                                                    
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="disk" items="${disks}">
-                        <c:if test="${disk.id != null}">
+                    <c:forEach var="user" items="${users}">
+                        <c:if test="${user.id != null}">
                             <tr>
-                                <td class="id">${disk.id}</td>
-                                <td class="request">
-                                    <c:if test="${disk.owner == user && disk.holder == user}">
-                                        <a class="btn-request" href="#"><span class="glyphicon glyphicon-ok icon-green"></span></a>
-                                        <a class="btn-request-cancel" href="#"><span class="glyphicon glyphicon-remove icon-red"></span></a>
-                                        </c:if>
-                                </td>
-                                <td>${disk.title}</td>
-                                <td class="owner">${disk.owner.username}</td>
-                                <td class="holder">${disk.holder.username}</td>
+                                <td class="id">${user.id}</td>
+                                <td><a href="<c:url value='/user/${user.id}'/>">${user.username}</a></td>                                
                             </tr>
                         </c:if>
                     </c:forEach>                        
                 </tbody>    
             </table>
-
+               
         </div>
         <script>
             var contextPath = '<%= request.getContextPath()%>';
-            var csrf = '<c:out value="${_csrf.token}"/>';
-            var dataSelection = '<c:out value="${selection}"/>';
+            var csrf = '<c:out value="${_csrf.token}"/>';            
         </script> 
         <script src="<c:url value='/static/js/jquery-1.12.0.min.js'/>"></script>
         <script src="<c:url value='/static/js/bootstrap.min.js'/>"></script>        
