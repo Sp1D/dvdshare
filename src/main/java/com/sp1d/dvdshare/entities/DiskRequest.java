@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -23,8 +25,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "requests")
+@NamedQueries(
+        @NamedQuery(name = "ALL", query = "SELECT dr FROM DiskRequest dr ORDER BY dr.id DESC")
+)
 public class DiskRequest implements Serializable {
-    
+
+    private static final long serialVersionUID = -599951805620463341L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "req_id", nullable = false)
@@ -38,14 +45,13 @@ public class DiskRequest implements Serializable {
     private Disk disk;
 
     @JsonSerialize(using = UserSerializer.class)
-    @ManyToOne    
+    @ManyToOne
     @JoinColumn(name = "req_user")
     private User user;
 
 //    public DiskRequest() {
 //        this.status = Status.REQUESTED;
 //    }
-
     public long getId() {
         return id;
     }
@@ -78,9 +84,8 @@ public class DiskRequest implements Serializable {
         this.user = user;
     }
 
-   
-
     public enum Status {
-        REQUESTED, CANCELLED, APPROVED, REJECTED
+
+        REQUESTED, CANCELLED, ACCEPTED, REJECTED, TAKEN
     }
 }

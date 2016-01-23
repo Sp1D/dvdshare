@@ -44,12 +44,17 @@ public class DiskRequestService {
         LOG.debug("saving diskRequest {}", savedRequest);
         return savedRequest;
     }
-    
+
     public DiskRequest findById(long id) {
         DiskRequest request = diskRequestRepo.findById(id);
         LOG.debug("finding diskRequest by ID {}, found {}", id, request);
         return request;
     }
-   
+
+    public List<DiskRequest> findAll() {
+        List<DiskRequest> diskRequests = diskRequestRepo.find(RequestSelection.ALL);
+        LOG.debug("finding all diskRequests");
+        return diskRequests;
+    }
 
 }

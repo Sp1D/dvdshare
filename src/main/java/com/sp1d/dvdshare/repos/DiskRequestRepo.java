@@ -9,6 +9,7 @@ import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.DiskSelection;
+import com.sp1d.dvdshare.service.RequestSelection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NamedQueries;
@@ -27,16 +28,15 @@ public class DiskRequestRepo {
     @PersistenceContext
     EntityManager em;
 
-    public List<Disk> findByUser(DiskSelection dataSelection, User user) {
-        Query q = em.createNamedQuery(dataSelection.toString());
-        q.setParameter("user", user);
-        return q.getResultList();
-    }
-    
+
     public DiskRequest findById(long id) {
         return em.find(DiskRequest.class, id);
     }
 
+   public List<DiskRequest> find(RequestSelection selection) {
+       Query q = em.createNamedQuery(selection.toString(), DiskRequest.class);
+       return q.getResultList();
+   }
     public DiskRequest add(DiskRequest t) {
         em.persist(t);
         return em.merge(t);

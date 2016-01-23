@@ -7,6 +7,7 @@ package com.sp1d.dvdshare.controller;
 
 import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.User;
+import com.sp1d.dvdshare.service.DiskRequestService;
 import com.sp1d.dvdshare.service.DiskSelection;
 import com.sp1d.dvdshare.service.DiskService;
 import com.sp1d.dvdshare.service.UserService;
@@ -33,6 +34,9 @@ public class UserController {
 
     @Autowired
     DiskService diskService;
+
+    @Autowired
+    DiskRequestService diskRequestService;
 
     private static final Logger LOG = LogManager.getLogger(UserController.class);
 
@@ -102,6 +106,7 @@ public class UserController {
             model.addAttribute("selection", selection.toString());
             model.addAttribute("user", user);
             model.addAttribute("disks", disks);
+            model.addAttribute("requests", diskRequestService.findAll());
         }
         return model;
     }

@@ -23,6 +23,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -50,17 +51,8 @@ public class RootConfig {
 //        Настройки берутся из classpath:c3p0.properties
         ComboPooledDataSource ds = new ComboPooledDataSource();
         LOG.debug("DataSource is set: {}", ds);
-//        DatabasePopulatorUtils.execute(databasePopulator(), ds);
 //        com.mchange.v2.log.MLog.getLogger().setLevel(MLevel.OFF);
         return ds;
-    }
-
-    private DatabasePopulator databasePopulator() {
-        ResourceDatabasePopulator rdp = new ResourceDatabasePopulator();
-//        rdp.setContinueOnError(true);
-        rdp.addScript(new ClassPathResource(env.getRequiredProperty("db.schema.initial")));
-        rdp.addScript(new ClassPathResource(env.getRequiredProperty("db.schema.exampledata")));
-        return rdp;
     }
 
     @Bean
@@ -77,11 +69,36 @@ public class RootConfig {
         emf.setPackagesToScan("com.sp1d.dvdshare.entities");
         emf.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
 //        Properties jpaProperties = new Properties();
-//        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");               
+//        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");
 //        emf.setJpaProperties(jpaProperties);
+
+        initDatabase();
         return emf;
     }
 
+    private void initDatabase() {
+        int existingTables = 0;
+
+        try (   Statement st = dataSource().getConnection().createStatement();
+                ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='PUBLIC'")
+                ) {
+
+            rs.next();
+            existingTables = rs.getInt(1);
+        } catch (SQLException ex) {
+            LOG.fatal(ex);
+        } finally {
+
+        }
+
+        if (existingTables == 0) {
+            LOG.debug("Database seems to be empty. Trying to fill it");
+            ResourceDatabasePopulator rdp = new ResourceDatabasePopulator();
+            rdp.addScript(new ClassPathResource(env.getRequiredProperty("db.schema.initial")));
+            rdp.addScript(new ClassPathResource(env.getRequiredProperty("db.schema.exampledata")));
+            DatabasePopulatorUtils.execute(rdp, dataSource());
+        }
+    }
 
     @Bean(name = "transactionManager")
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory,

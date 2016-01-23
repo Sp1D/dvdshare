@@ -50,8 +50,10 @@
                                 <td class="request">
                                     <c:if test="${disk.owner == user && disk.holder == user}">
                                         <span class="glyphicon glyphicon-ok btn-request"></span></a>
+                                        <c:if test=""
+                                        
                                         <span class="glyphicon glyphicon-remove btn-cancel"></span></a>
-                                        </c:if>
+                                    </c:if>
                                 </td>
                                 <td>${disk.title}</td>
                                 <td class="owner">${disk.owner.username}</td>
