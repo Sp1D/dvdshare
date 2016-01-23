@@ -5,6 +5,7 @@
  */
 package com.sp1d.dvdshare.entities;
 
+import com.sp1d.dvdshare.service.UserSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Objects;
@@ -60,9 +61,9 @@ public class Disk implements Serializable {
     @JoinColumn(name = "disk_holder", nullable = false)
     private User holder;
 
-    public Disk() {
-        LOG.debug("Constructed {}", this.toString());
-    }
+//    public Disk() {
+//        LOG.debug("Constructed {}", this.toString());
+//    }
 
     public long getId() {
         return id;

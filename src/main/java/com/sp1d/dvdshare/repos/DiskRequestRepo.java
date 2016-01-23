@@ -6,6 +6,7 @@
 package com.sp1d.dvdshare.repos;
 
 import com.sp1d.dvdshare.entities.Disk;
+import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.DiskSelection;
 import java.util.List;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * @author sp1d
  */
 @Repository
-public class DiskRepo {
+public class DiskRequestRepo {
 
     @PersistenceContext
     EntityManager em;
@@ -32,20 +33,20 @@ public class DiskRepo {
         return q.getResultList();
     }
     
-    public Disk findById(long id) {
-        return em.find(Disk.class, id);
+    public DiskRequest findById(long id) {
+        return em.find(DiskRequest.class, id);
     }
 
-    public Disk add(Disk t) {
+    public DiskRequest add(DiskRequest t) {
         em.persist(t);
         return em.merge(t);
     }
 
-    public Disk save(Disk t) {
+    public DiskRequest save(DiskRequest t) {
         return em.merge(t);
     }
 
-    public void delete(Disk t) {
+    public void delete(DiskRequest t) {
         em.remove(t);
     }
 }

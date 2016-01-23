@@ -42,6 +42,12 @@ public class DiskService {
         LOG.debug("saving disk {}", savedDisk);
         return savedDisk;
     }
+    
+    public Disk findById(long id) {
+        Disk disk = diskRepo.findById(id);
+        LOG.debug("finding disk by ID {}, found {}", id, disk);
+        return disk;
+    }
 
     public List<Disk> findByUser(DiskSelection dataSelection, User user) {
         return findByUser(dataSelection, user, Disk.Field.ID);

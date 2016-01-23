@@ -6,8 +6,11 @@
 package com.sp1d.dvdshare.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mchange.v2.log.MLevel;
-import java.net.MalformedURLException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+import java.util.logging.Level;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
@@ -19,9 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -75,18 +76,13 @@ public class RootConfig {
         emf.setDataSource(dataSource());
         emf.setPackagesToScan("com.sp1d.dvdshare.entities");
         emf.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
-
+//        Properties jpaProperties = new Properties();
+//        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");               
+//        emf.setJpaProperties(jpaProperties);
         return emf;
     }
 
-//    @Bean
-//    PlatformTransactionManager transactionManager() {
-//        JpaTransactionManager tm = new JpaTransactionManager();
-//        tm.setEntityManagerFactory(entityManagerFactory().getObject());
-////        tm.setDataSource(dataSource());
-//        tm.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
-//        return tm;
-//    }
+
     @Bean(name = "transactionManager")
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory,
             DataSource dataSource) {

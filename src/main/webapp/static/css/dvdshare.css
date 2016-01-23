@@ -35,11 +35,11 @@ table.tbl-users .id {
     white-space: nowrap;
 }
 
-.icon-green {
+.btn-request {
     color:  #66cc00;
 }
 
-.icon-red {
+.btn-cancel {
     color:  #ff3300;
 }
 
