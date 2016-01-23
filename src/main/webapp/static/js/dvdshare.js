@@ -7,9 +7,9 @@ function addDiskByForm() {
     $.post(contextPath + "/disk/create", data, function (disk) {
         if (disk !== null) {
             var diskString = '<tr><td class="id">' + disk.id + '</td>'
-            + '<td>' + disk.title + '</td>'
-            + '<td class="owner">' + disk.owner.username + '</td>'
-            + '<td class="holder">' + disk.holder.username + '</td></tr>';
+                    + '<td>' + disk.title + '</td>'
+                    + '<td class="owner">' + disk.owner.username + '</td>'
+                    + '<td class="holder">' + disk.holder.username + '</td></tr>';
 
             $('.tbl-mydisks tbody').append(diskString);
 
@@ -51,6 +51,12 @@ $(function () {
             break;
         case "GIVEN" :
             $('#tab-given').toggleClass('active');
+            break;
+        case "IN" :
+            $('#tab-in').toggleClass('active');
+            break;
+        case "OUT" :
+            $('#tab-out').toggleClass('active');
             break;
     }
 });

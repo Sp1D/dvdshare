@@ -45,8 +45,12 @@ table.tbl-users .id {
     cursor: pointer;
 }
 
+.btn-request-disabled {
+    color:  #999999;    
+}
+
 .btn-cancel-disabled {
-    color:  #ffffff;    
+    color:  #999999;    
 }
 
 /* Override of bootstrap class */

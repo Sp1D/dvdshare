@@ -5,15 +5,11 @@
  */
 package com.sp1d.dvdshare.repos;
 
-import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
-import com.sp1d.dvdshare.service.DiskSelection;
 import com.sp1d.dvdshare.service.RequestSelection;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
@@ -28,15 +24,26 @@ public class DiskRequestRepo {
     @PersistenceContext
     EntityManager em;
 
-
     public DiskRequest findById(long id) {
         return em.find(DiskRequest.class, id);
     }
 
-   public List<DiskRequest> find(RequestSelection selection) {
-       Query q = em.createNamedQuery(selection.toString(), DiskRequest.class);
-       return q.getResultList();
-   }
+
+    public boolean contains(DiskRequest diskRequest) {
+        return em.contains(diskRequest);
+    }
+
+    public List<DiskRequest> find(RequestSelection selection) {
+        Query q = em.createNamedQuery(selection.toString(), DiskRequest.class);
+        return q.getResultList();
+    }
+
+    public List<DiskRequest> find(RequestSelection selection, User user) {
+        Query q = em.createNamedQuery(selection.toString(), DiskRequest.class);
+        q.setParameter("user", user);
+        return q.getResultList();
+    }
+
     public DiskRequest add(DiskRequest t) {
         em.persist(t);
         return em.merge(t);

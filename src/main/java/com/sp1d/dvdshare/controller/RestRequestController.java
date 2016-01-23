@@ -11,27 +11,24 @@ import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.DiskRequestService;
 import com.sp1d.dvdshare.service.DiskService;
 import com.sp1d.dvdshare.service.UserService;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author che
  */
 @Controller
-//@RestController
 @RequestMapping(path = "/rest/request")
-public class RequestController {
+public class RestRequestController {
 
     @Autowired
     DiskService diskService;
@@ -40,7 +37,7 @@ public class RequestController {
     @Autowired
     DiskRequestService diskRequestService;
 
-    private static final Logger LOG = LogManager.getLogger(RequestController.class);
+    private static final Logger LOG = LogManager.getLogger(RestRequestController.class);
 
     @RequestMapping(path = "create", method = RequestMethod.POST)
     @ResponseBody
@@ -57,7 +54,9 @@ public class RequestController {
             diskRequest.setStatus(DiskRequest.Status.REQUESTED);
             diskRequest.setDisk(disk);
             diskRequest.setUser(user);
-            diskRequest = diskRequestService.add(diskRequest);
+            if (!diskRequestService.contains(diskRequest)) {
+                diskRequest = diskRequestService.add(diskRequest);
+            }
         } else {
             diskRequest = new DiskRequest();
             diskRequest.setStatus(DiskRequest.Status.CANCELLED);

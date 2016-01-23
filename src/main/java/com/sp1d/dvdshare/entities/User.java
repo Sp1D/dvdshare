@@ -6,12 +6,15 @@
 package com.sp1d.dvdshare.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 @Table(name = "users")
 public class User implements Serializable{
     private static final long serialVersionUID = -4674771583377131450L;
-    
+
 
     @Transient
     private static final Logger LOG = LogManager.getLogger(User.class);
@@ -44,6 +47,9 @@ public class User implements Serializable{
     @Column(name = "user_password")
     private String password;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<DiskRequest> requests;
+
     @Transient
     private String plainPassword;
 
@@ -53,9 +59,9 @@ public class User implements Serializable{
     @Column(name = "user_enabled", nullable = false)
     private boolean enabled;
 
-    public User() {
-        LOG.debug("Constructed {}", this.toString());
-    }
+//    public User() {
+//        LOG.debug("Constructed {}", this.toString());
+//    }
 
     public long getId() {
         return id;
@@ -112,6 +118,16 @@ public class User implements Serializable{
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    public List<DiskRequest> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<DiskRequest> requests) {
+        this.requests = requests;
+    }
+
+
 
     @Override
     public int hashCode() {

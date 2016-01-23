@@ -6,10 +6,12 @@
 package com.sp1d.dvdshare.controller;
 
 import com.sp1d.dvdshare.entities.Disk;
+import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.DiskRequestService;
 import com.sp1d.dvdshare.service.DiskSelection;
 import com.sp1d.dvdshare.service.DiskService;
+import com.sp1d.dvdshare.service.RequestSelection;
 import com.sp1d.dvdshare.service.UserService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -48,16 +50,16 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/{id}", method = RequestMethod.GET)
-    String showUser(@PathVariable long id, Model model) {
+    String showUser(@PathVariable long id, Model model, HttpServletRequest req) {
         LOG.debug("entering controller at GET /user/{id}");
-        setModel(id, model, null);
+        setModel(id, req, model, null);
         return "user";
     }
 
     @RequestMapping(path = "/user/{id}/{whose}", method = RequestMethod.GET)
-    String showUser(@PathVariable long id, @PathVariable String whose, Model model) {
-        LOG.debug("entering controller at GET /user/{id}");
-        setModel(id, model, whose);
+    String showUser(@PathVariable long id, @PathVariable String whose, Model model, HttpServletRequest req) {
+        LOG.debug("entering controller at GET /user/{id}/{whose}");
+        setModel(id, req, model, whose);
         return "user";
     }
 
@@ -75,34 +77,64 @@ public class UserController {
         return "home";
     }
 
-    private Model setModel(long id, Model model, String whose) {
+    @RequestMapping(path = "/user/self/requests/{select}")
+    String showRequests(@PathVariable String select, Model model, HttpServletRequest req) {
+        LOG.debug("entering controller at GET /user/self/requests");
+        User user = null;
+        if (req.getUserPrincipal() != null) {
+
+            user = userService.findByEmail(req.getUserPrincipal().getName());
+            if (user != null) {
+                RequestSelection selection = RequestSelection.OUT;
+                if (select != null) {
+                    try {
+                        selection = RequestSelection.valueOf(select.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        selection = RequestSelection.OUT;
+                    }
+                }
+//                List<DiskRequest> requests = diskRequestService.findByUser(selection, user);
+                for (DiskRequest request : user.getRequests()) {
+                    System.out.println(request.getId() + " : " + request.getDisk().getTitle());
+                }
+                model.addAttribute("requests", user.getRequests());
+                model.addAttribute("selection", selection);
+            }
+        }
+        return "requests";
+    }
+
+    private Model setModel(long id, HttpServletRequest req, Model model, String whose) {
         User user = userService.findById(id);
-        return setModel(user, model, whose);
+        User principal = null;
+        if (req.getUserPrincipal() != null) {
+            principal = userService.findByEmail(req.getUserPrincipal().getName());
+        }
+        return setModel(principal, user, model, whose);
     }
 
     private Model setModel(HttpServletRequest req, Model model, String whose) {
-        User user = null;
+        User principal = null;
         if (req.getUserPrincipal() != null) {
-            user = userService.findByEmail(req.getUserPrincipal().getName());
+            principal = userService.findByEmail(req.getUserPrincipal().getName());
         }
-        return setModel(user, model, whose);
+        return setModel(principal, principal, model, whose);
     }
 
-    private Model setModel(User user, Model model, String whose) {
+    private Model setModel(User userPrincipal, User user, Model model, String whose) {
         if (user != null) {
             List<Disk> disks;
-            DiskSelection selection;
+            DiskSelection selection = DiskSelection.OWN;
             if (whose != null) {
                 try {
                     selection = DiskSelection.valueOf(whose.toUpperCase());
                 } catch (IllegalArgumentException e) {
                     selection = DiskSelection.OWN;
                 }
-            } else {
-                selection = DiskSelection.OWN;
             }
 
             disks = diskService.findByUser(selection, user);
+            model.addAttribute("userPrincipal", userPrincipal);
             model.addAttribute("selection", selection.toString());
             model.addAttribute("user", user);
             model.addAttribute("disks", disks);

@@ -33,28 +33,40 @@ public class DiskRequestService {
 
     private static final Logger LOG = LogManager.getLogger(DiskRequestService.class);
 
-    public DiskRequest add(DiskRequest disk) {
-        DiskRequest persistedRequest = diskRequestRepo.add(disk);
-        LOG.debug("adding diskRequest {}", persistedRequest);
+    public DiskRequest add(DiskRequest request) {
+        LOG.debug("adding diskRequest {}", request);
+        DiskRequest persistedRequest = diskRequestRepo.add(request);
         return persistedRequest;
     }
 
-    public DiskRequest save(DiskRequest disk) {
-        DiskRequest savedRequest = diskRequestRepo.save(disk);
-        LOG.debug("saving diskRequest {}", savedRequest);
+    public DiskRequest save(DiskRequest request) {
+        LOG.debug("saving diskRequest {}", request);
+        DiskRequest savedRequest = diskRequestRepo.save(request);
         return savedRequest;
     }
 
     public DiskRequest findById(long id) {
+        LOG.debug("finding diskRequest by ID {}", id);
         DiskRequest request = diskRequestRepo.findById(id);
-        LOG.debug("finding diskRequest by ID {}, found {}", id, request);
         return request;
     }
 
-    public List<DiskRequest> findAll() {
-        List<DiskRequest> diskRequests = diskRequestRepo.find(RequestSelection.ALL);
-        LOG.debug("finding all diskRequests");
+    public List<DiskRequest> findByUser(RequestSelection selection, User user) {
+        LOG.debug("finding diskRequests by user {}", user);
+        List<DiskRequest> diskRequests = diskRequestRepo.find(selection, user);
         return diskRequests;
+    }
+
+    public List<DiskRequest> findAll() {
+        LOG.debug("finding all diskRequests");
+        List<DiskRequest> diskRequests = diskRequestRepo.find(RequestSelection.ALL);
+        return diskRequests;
+    }
+
+    public boolean contains(DiskRequest diskRequest) {
+        LOG.debug("finding if particular request {} is contains in table", diskRequest);
+        return diskRequestRepo.contains(diskRequest);
+
     }
 
 }

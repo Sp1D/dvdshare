@@ -17,6 +17,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<c:url value='/user/self'/>">Home</a></li>
                         <li><a href="<c:url value='/users'/>">Other users</a></li>                            
+                        <li><a href="<c:url value='/user/self/requests/out'/>">Requests</a></li>                            
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

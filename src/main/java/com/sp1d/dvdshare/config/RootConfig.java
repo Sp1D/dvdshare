@@ -9,8 +9,6 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
-import java.util.logging.Level;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -61,7 +58,7 @@ public class RootConfig {
         HibernateJpaVendorAdapter va = new HibernateJpaVendorAdapter();
         va.setDatabase(Database.HSQL);
         va.setDatabasePlatform("org.hibernate.dialect.HSQLDialect");
-//        va.setGenerateDdl(true);
+        va.setGenerateDdl(true);
         va.setShowSql(true);
         emf.setJpaVendorAdapter(va);
 
@@ -72,7 +69,7 @@ public class RootConfig {
 //        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");
 //        emf.setJpaProperties(jpaProperties);
 
-        initDatabase();
+//        initDatabase();
         return emf;
     }
 

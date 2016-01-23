@@ -5,6 +5,7 @@
  */
 package com.sp1d.dvdshare.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sp1d.dvdshare.service.UserSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +40,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Disk implements Serializable {
     private static final long serialVersionUID = 123940492941695808L;
-    
+
 
     @Transient
     private static final Logger LOG = LogManager.getLogger(Disk.class);
@@ -60,6 +62,10 @@ public class Disk implements Serializable {
     @ManyToOne
     @JoinColumn(name = "disk_holder", nullable = false)
     private User holder;
+
+    @JsonIgnore
+    @OneToOne
+    private DiskRequest request;
 
 //    public Disk() {
 //        LOG.debug("Constructed {}", this.toString());
@@ -96,6 +102,16 @@ public class Disk implements Serializable {
     public void setHolder(User holder) {
         this.holder = holder;
     }
+
+    public DiskRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(DiskRequest request) {
+        this.request = request;
+    }
+
+    
 
     @Override
     public int hashCode() {

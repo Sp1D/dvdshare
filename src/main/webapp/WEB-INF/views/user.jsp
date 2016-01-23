@@ -1,4 +1,6 @@
+<%@page import="com.sp1d.dvdshare.entities.User"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib  prefix="f" uri="functions.tld"  %>
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <html>
@@ -10,7 +12,7 @@
         <link rel="stylesheet" href="<c:url value='/static/css/bootstrap.min.css'/>">        
         <link rel="stylesheet" href="<c:url value='/static/css/dvdshare.css'/>">
     </head>
-    <body>
+    <body>        
         <div class="container">
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container-fluid">
@@ -25,8 +27,7 @@
                 </div>
             </nav>
             <div class="page-header">
-                <h1>${user.username}</h1>
-                <p>Want to <a href="<c:url value="/user/${user.id}/hold"/>">request some of his disks</a> ?</p>
+                <h1>${user.username}</h1>                
             </div>            
             <ul id="tabs" class="nav nav-tabs">
                 <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/${user.id}/own"/>">His own disks</a></li>
@@ -48,11 +49,17 @@
                             <tr>
                                 <td class="id">${disk.id}</td>
                                 <td class="request">
-                                    <c:if test="${disk.owner == user && disk.holder == user}">
-                                        <span class="glyphicon glyphicon-ok btn-request"></span></a>
-                                        <c:if test=""
-                                        
-                                        <span class="glyphicon glyphicon-remove btn-cancel"></span></a>
+                                    <c:if test="${disk.owner == user && disk.holder == user}">                                        
+                                        <c:choose>
+                                            <c:when test="${f:colcontains(requests, disk.request)}">
+                                                <span class="glyphicon glyphicon-ok btn-request-disabled"></span>    
+                                                <span class="glyphicon glyphicon-remove btn-cancel"></span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="glyphicon glyphicon-ok btn-request"></span>    
+                                                <span class="glyphicon glyphicon-remove btn-cancel-disabled"></span>
+                                            </c:otherwise>
+                                        </c:choose>                                        
                                     </c:if>
                                 </td>
                                 <td>${disk.title}</td>
