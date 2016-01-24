@@ -5,6 +5,8 @@
  */
 package com.sp1d.dvdshare.entities;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,36 +15,37 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author sp1d
  */
-//@Entity
-@Table(name = "takenitem", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","disk_id"}))
-public class TakenItem {
+@Entity
+@Table(name = "takenitems", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","disk_id"}))
+public class TakenItem implements Serializable {
+    private static final long serialVersionUID = -7111578635890472013L;
 
-    private static final Logger LOG = LogManager.getLogger(TakenItem.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "takenitem_id", nullable = false)
+    @Column(name = "ti_id", nullable = false)
     long id;
 
     @ManyToOne
-//    @Column(name = "user", nullable = false)
     User user;
 
     @ManyToOne
-//    @Column(name = "disk", nullable = false)
+    User owner;
+
+    @ManyToOne
     Disk disk;
 
-    public TakenItem() {
-        LOG.debug("Constructed {}", this.toString());
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ti_date")
+    Date date;
 
     public long getId() {
         return id;
@@ -60,6 +63,14 @@ public class TakenItem {
         this.user = user;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public Disk getDisk() {
         return disk;
     }
@@ -68,11 +79,23 @@ public class TakenItem {
         this.disk = disk;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    
+
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 47 * hash + Objects.hashCode(this.user);
-        hash = 47 * hash + Objects.hashCode(this.disk);
+        hash = 83 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 83 * hash + Objects.hashCode(this.user);
+        hash = 83 * hash + Objects.hashCode(this.owner);
+        hash = 83 * hash + Objects.hashCode(this.disk);
         return hash;
     }
 
@@ -88,11 +111,16 @@ public class TakenItem {
         if (!Objects.equals(this.user, other.user)) {
             return false;
         }
+        if (!Objects.equals(this.owner, other.owner)) {
+            return false;
+        }
         if (!Objects.equals(this.disk, other.disk)) {
             return false;
         }
         return true;
     }
+
+
 
 
 

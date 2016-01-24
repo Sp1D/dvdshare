@@ -67,10 +67,6 @@ public class Disk implements Serializable {
     @OneToOne
     private DiskRequest request;
 
-//    public Disk() {
-//        LOG.debug("Constructed {}", this.toString());
-//    }
-
     public long getId() {
         return id;
     }
@@ -111,7 +107,7 @@ public class Disk implements Serializable {
         this.request = request;
     }
 
-    
+
 
     @Override
     public int hashCode() {

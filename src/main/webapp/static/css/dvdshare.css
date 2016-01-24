@@ -35,20 +35,15 @@ table.tbl-users .id {
     white-space: nowrap;
 }
 
-table.tbl-requests .id {
+table.tbl-requests .id, .owner{
     width: 1%;
     white-space: nowrap;
 }
 
-table.tbl-requests .owner  {
+table.tbl-requests .request, .status, .take {
     width: 1%;
     white-space: nowrap;
-}
-
-table.tbl-requests .request, .status {
-    width: 1%;
-    white-space: nowrap;
-    text-align: center;
+    text-align: center;    
 }
 
 #btn-request {

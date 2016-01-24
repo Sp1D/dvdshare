@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/disk")
 public class RestDiskController {
 
-//    TODO Добавить к диску поле - тип диска
     @Autowired
     DiskService diskService;
 

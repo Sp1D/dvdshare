@@ -60,9 +60,7 @@ public class DiskRequest implements Serializable {
     @JoinColumn(name = "req_user")
     private User user;
 
-//    public DiskRequest() {
-//        this.status = Status.REQUESTED;
-//    }
+
     public long getId() {
         return id;
     }

@@ -59,10 +59,6 @@ public class User implements Serializable{
     @Column(name = "user_enabled", nullable = false)
     private boolean enabled;
 
-//    public User() {
-//        LOG.debug("Constructed {}", this.toString());
-//    }
-
     public long getId() {
         return id;
     }

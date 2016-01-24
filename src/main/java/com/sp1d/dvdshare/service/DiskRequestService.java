@@ -5,14 +5,10 @@
  */
 package com.sp1d.dvdshare.service;
 
-import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.repos.DiskRepo;
 import com.sp1d.dvdshare.repos.DiskRequestRepo;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,49 +34,41 @@ public class DiskRequestService {
 
     public DiskRequest add(DiskRequest request) {
         LOG.debug("adding diskRequest {}", request);
-        DiskRequest persistedRequest = diskRequestRepo.add(request);
-        return persistedRequest;
+        return diskRequestRepo.add(request);
     }
 
     public DiskRequest save(DiskRequest request) {
         LOG.debug("saving diskRequest {}", request);
-        DiskRequest savedRequest = diskRequestRepo.save(request);
-        return savedRequest;
+        return diskRequestRepo.save(request);
     }
 
     public DiskRequest findById(long id) {
         LOG.debug("finding diskRequest by ID {}", id);
-        DiskRequest request = diskRequestRepo.findById(id);
-        return request;
+        return diskRequestRepo.findById(id);
     }
 
     public List<DiskRequest> findByUser(RequestSelection selection, User user) {
         LOG.debug("finding diskRequests by user {}", user);
-        List<DiskRequest> diskRequests = diskRequestRepo.find(selection, user);
-        return diskRequests;
+        return diskRequestRepo.find(selection, user);
     }
 
     public long countByUser(RequestSelection selection, User user) {
         LOG.debug("finding count of diskRequests by user {}", user);
-        long diskRequests = diskRequestRepo.count(selection, user);
-        return diskRequests;
+        return diskRequestRepo.count(selection, user);
     }
 
     public long countNewIncomingByUser(RequestSelection selection, User user) {
         LOG.debug("finding count of new incoming diskRequests by user {}", user);
-        long diskRequests = diskRequestRepo.countNewIncoming(selection, user);
-        return diskRequests;
+        return diskRequestRepo.countNewIncoming(selection, user);
     }
 
     public List<DiskRequest> findAll() {
         LOG.debug("finding all diskRequests");
-        List<DiskRequest> diskRequests = diskRequestRepo.find(RequestSelection.ALL);
-        return diskRequests;
+        return diskRequestRepo.find(RequestSelection.ALL);
     }
 
     public boolean contains(DiskRequest diskRequest) {
         LOG.debug("finding if particular request {} is contains in table", diskRequest);
-
         return diskRequestRepo.contains(diskRequest);
     }
 

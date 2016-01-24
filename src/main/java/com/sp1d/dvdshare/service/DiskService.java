@@ -32,21 +32,18 @@ public class DiskService {
     private static final Logger LOG = LogManager.getLogger(DiskService.class);
 
     public Disk add(Disk disk) {
-        Disk persistedDisk = diskRepo.add(disk);
-        LOG.debug("adding disk {}", persistedDisk);
-        return persistedDisk;
+        LOG.debug("adding disk {}", disk);
+        return diskRepo.add(disk);
     }
 
     public Disk save(Disk disk) {
-        Disk savedDisk = diskRepo.save(disk);
-        LOG.debug("saving disk {}", savedDisk);
-        return savedDisk;
+        LOG.debug("saving disk {}", disk);
+        return diskRepo.save(disk);
     }
-    
+
     public Disk findById(long id) {
-        Disk disk = diskRepo.findById(id);
-        LOG.debug("finding disk by ID {}, found {}", id, disk);
-        return disk;
+        LOG.debug("finding disk by ID {}", id);
+        return diskRepo.findById(id);
     }
 
     public List<Disk> findByUser(DiskSelection dataSelection, User user) {
