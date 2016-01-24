@@ -80,11 +80,11 @@ public class UserController {
     @RequestMapping(path = "/user/self/requests/{select}")
     String showRequests(@PathVariable String select, Model model, HttpServletRequest req) {
         LOG.debug("entering controller at GET /user/self/requests");
-        User user = null;
+        User userPrincipal = null;
         if (req.getUserPrincipal() != null) {
 
-            user = userService.findByEmail(req.getUserPrincipal().getName());
-            if (user != null) {
+            userPrincipal = userService.findByEmail(req.getUserPrincipal().getName());
+            if (userPrincipal != null) {
                 RequestSelection selection = RequestSelection.OUT;
                 if (select != null) {
                     try {
@@ -94,10 +94,11 @@ public class UserController {
                     }
                 }
 //                List<DiskRequest> requests = diskRequestService.findByUser(selection, user);
-                for (DiskRequest request : user.getRequests()) {
+                for (DiskRequest request : userPrincipal.getRequests()) {
                     System.out.println(request.getId() + " : " + request.getDisk().getTitle());
                 }
-                model.addAttribute("requests", user.getRequests());
+                model.addAttribute("userPrincipal", userPrincipal);
+                model.addAttribute("requests", userPrincipal.getRequests());
                 model.addAttribute("selection", selection);
             }
         }

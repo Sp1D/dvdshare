@@ -35,6 +35,22 @@ table.tbl-users .id {
     white-space: nowrap;
 }
 
+table.tbl-requests .id {
+    width: 1%;
+    white-space: nowrap;
+}
+
+table.tbl-requests .owner, .status, .request {
+    width: 1%;
+    white-space: nowrap;
+}
+
+table.tbl-requests .request {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
 .btn-request {
     color:  #66cc00;
     cursor: pointer;

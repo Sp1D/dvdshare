@@ -19,6 +19,20 @@ function addDiskByForm() {
     $('#modal-adddisk').modal('hide');
 }
 
+
+
+function cancelRequest(obj) {
+    var data = {
+        _csrf: csrf.toString(),
+        id: $(obj).parents('tr').children('.id').html()
+    };
+    $.post(contextPath + "/rest/request/delete/", data, function (request) {
+        if (request.status === 'CANCELLED') {
+
+        }
+    });
+}
+
 $(function () {
     $('#btn-add-disk').click(addDiskByForm);
     $('#newdisk-title').keydown(function (event) {
@@ -28,15 +42,44 @@ $(function () {
         }
     });
 
-    $('.btn-request').click(function () {
+// Обработка нажатий на кнопки отмены запроса диска на своей странице
+
+    $('.tbl-requests .btn-cancel').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
-        $.post(contextPath + "/rest/request/create/", data, function () {
-
+        var row = $(this).parents('tr').children('td');
+        $.post(contextPath + "/rest/request/delete/", data, function (request) {
+            if (request.status === "CANCELLED") {
+                row.fadeOut('fast',function(){
+                    $(row).remove();
+                });
+//                $(this).parents('tr').remove();
+            }
         });
     });
+
+// Обработка нажатий на кнопки запроса диска и отмены запроса
+// на странице другого пользователя
+
+    $('.tbl-mydisks .btn-request').click(function () {
+        var data = {
+            _csrf: csrf.toString(),
+            id: $(this).parents('tr').children('.id').html()
+        };
+        var btnreq = $(this);
+        var btncancel = $(this).siblings('.btn-cancel-disabled');
+        $.post(contextPath + "/rest/request/create/", data, function (response) {
+            if (response.status === "REQUESTED") {
+                btnreq.addClass('.btn-request-disabled').removeClass('.btn-request');
+                btncancel.addClass('.btn-cancel').removeClass('.btn-cancel-disabled');
+            }
+        });
+    });
+
+
+//  Установка активной вкладки
 
     $('#tabs li').removeClass('active');
     switch (dataSelection) {

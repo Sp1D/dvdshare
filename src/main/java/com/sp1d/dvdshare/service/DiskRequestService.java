@@ -31,6 +31,9 @@ public class DiskRequestService {
     @Autowired
     DiskRequestRepo diskRequestRepo;
 
+    @Autowired
+    DiskRepo diskRepo;
+
     private static final Logger LOG = LogManager.getLogger(DiskRequestService.class);
 
     public DiskRequest add(DiskRequest request) {
@@ -65,8 +68,17 @@ public class DiskRequestService {
 
     public boolean contains(DiskRequest diskRequest) {
         LOG.debug("finding if particular request {} is contains in table", diskRequest);
+        
         return diskRequestRepo.contains(diskRequest);
+    }
 
+    public void delete(DiskRequest diskRequest) {
+        LOG.debug("deleting request {}", diskRequest);
+        
+        diskRequest.getDisk().setRequest(null);
+        diskRepo.save(diskRequest.getDisk());       
+        diskRequest = diskRequestRepo.save(diskRequest);
+        diskRequestRepo.delete(diskRequest);
     }
 
 }

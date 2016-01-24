@@ -18,7 +18,8 @@
                 <div class="container-fluid">
                     <ul class="nav navbar-nav">
                         <li><a href="<c:url value='/user/self'/>">Home</a></li>
-                        <li class="active"><a href="<c:url value='/users'/>">Other users</a></li>                            
+                        <li class="active"><a href="<c:url value='/users'/>">Other users</a></li>
+                        <li><a href="<c:url value='/user/self/requests/out'/>">Requests</a></li> 
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -46,6 +47,9 @@
                 <tbody>
                     <c:forEach var="disk" items="${disks}">
                         <c:if test="${disk.id != null}">
+                            ${disk.id}:
+                            ${disk.title}:
+                        ${disk.request}<br>
                             <tr>
                                 <td class="id">${disk.id}</td>
                                 <td class="request">

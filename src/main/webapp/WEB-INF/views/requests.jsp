@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${user.username} requests - dvdshare</title>
+        <title>${userPrincipal.username} requests - dvdshare</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="<c:url value='/static/img/favicon.png'/>">
@@ -26,8 +26,8 @@
                 </div>
             </nav>
             <div class="page-header">
-                <h1>Hello,<br>${user.username}!</h1>
-                <p>That is all requests you made or received</p>
+                <h1>Hello,<br>${userPrincipal.username}!</h1>
+                <p>That is all active requests you made or received</p>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
                 <li id="tab-in" role="presentation" class="active"><a href="<c:url value="/user/self/requests/in"/>">Incoming</a></li>
@@ -39,6 +39,8 @@
                         <th class="id">Req. #</th>
                         <th>Title</th>                            
                         <th class="owner">Owner</th>                        
+                        <th class="status">Status</th>                        
+                        <th class="request">Request</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,7 +50,10 @@
                                 <td class="id">${request.id}</td>
                                 <td>${request.disk.title}</td>
                                 <td class="owner">${request.disk.owner.username}</td>
-                                <!--<td class="holder">${disk.holder.username}</td>-->
+                                <td class="status">${request.status}</td>
+                                <td class="request">                                      
+                                    <span class="glyphicon glyphicon-remove btn-cancel"></span>
+                                </td>
                             </tr>
                         </c:if>
                     </c:forEach>                        

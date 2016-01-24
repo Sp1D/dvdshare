@@ -32,8 +32,10 @@ public class RestRequestController {
 
     @Autowired
     DiskService diskService;
+
     @Autowired
     UserService userService;
+
     @Autowired
     DiskRequestService diskRequestService;
 
@@ -41,13 +43,13 @@ public class RestRequestController {
 
     @RequestMapping(path = "create", method = RequestMethod.POST)
     @ResponseBody
-    DiskRequest createRequest(@RequestParam long id) {
-        LOG.debug("entering controller POST /rest/request/create/{} from user {}", id);
+    DiskRequest createRequest(@RequestParam("id") long diskId) {
+        LOG.debug("entering controller POST /rest/request/create/{}", diskId);
 
         DiskRequest diskRequest;
 
         User user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        Disk disk = diskService.findById(id);
+        Disk disk = diskService.findById(diskId);
 
         if (disk != null && user != null) {
             diskRequest = new DiskRequest();
@@ -56,12 +58,32 @@ public class RestRequestController {
             diskRequest.setUser(user);
             if (!diskRequestService.contains(diskRequest)) {
                 diskRequest = diskRequestService.add(diskRequest);
+                disk.setRequest(diskRequest);
+                diskService.save(disk);
             }
         } else {
             diskRequest = new DiskRequest();
             diskRequest.setStatus(DiskRequest.Status.CANCELLED);
         }
 
+        return diskRequest;
+    }
+
+    @RequestMapping(path = "delete", method = RequestMethod.POST)
+    @ResponseBody
+    DiskRequest deleteRequest(@RequestParam("id") long reqId) {
+        LOG.debug("entering controller POST /rest/request/delete/{}", reqId);
+
+        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        DiskRequest diskRequest = diskRequestService.findById(reqId);
+
+        if (userPrincipal != null && diskRequest != null
+                && diskRequest.getUser().equals(userPrincipal)) {
+//            Реквест в этом статусе последний раз увидит получатель json. 
+//              это сигнал, что реквест удален
+            diskRequest.setStatus(DiskRequest.Status.CANCELLED);
+            diskRequestService.delete(diskRequest);
+        }
         return diskRequest;
     }
 }
