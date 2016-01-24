@@ -79,10 +79,42 @@ public class RestRequestController {
 
         if (userPrincipal != null && diskRequest != null
                 && diskRequest.getUser().equals(userPrincipal)) {
-//            Реквест в этом статусе последний раз увидит получатель json. 
+//            Реквест в этом статусе последний раз увидит получатель json.
 //              это сигнал, что реквест удален
             diskRequest.setStatus(DiskRequest.Status.CANCELLED);
             diskRequestService.delete(diskRequest);
+        }
+        return diskRequest;
+    }
+
+    @RequestMapping(path = "reject", method = RequestMethod.POST)
+    @ResponseBody
+    DiskRequest rejectRequest(@RequestParam("id") long reqId) {
+        LOG.debug("entering controller POST /rest/request/reject/{}", reqId);
+
+        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        DiskRequest diskRequest = diskRequestService.findById(reqId);
+
+        if (userPrincipal != null && diskRequest != null
+                && diskRequest.getDisk().getOwner().equals(userPrincipal)) {
+            diskRequest.setStatus(DiskRequest.Status.REJECTED);
+            diskRequest = diskRequestService.save(diskRequest);
+        }
+        return diskRequest;
+    }
+
+    @RequestMapping(path = "accept", method = RequestMethod.POST)
+    @ResponseBody
+    DiskRequest acceptRequest(@RequestParam("id") long reqId) {
+        LOG.debug("entering controller POST /rest/request/accept/{}", reqId);
+
+        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        DiskRequest diskRequest = diskRequestService.findById(reqId);
+
+        if (userPrincipal != null && diskRequest != null
+                && diskRequest.getDisk().getOwner().equals(userPrincipal)) {
+            diskRequest.setStatus(DiskRequest.Status.ACCEPTED);
+            diskRequest = diskRequestService.save(diskRequest);
         }
         return diskRequest;
     }

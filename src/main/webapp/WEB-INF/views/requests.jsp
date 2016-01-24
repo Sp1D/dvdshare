@@ -17,7 +17,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="<c:url value='/user/self'/>">Home</a></li>
                         <li><a href="<c:url value='/users'/>">Other users</a></li>                            
-                        <li class="active"><a href="<c:url value='/user/self/requests/out'/>">Requests</a></li>                            
+                        <li class="active"><a href="<c:url value='/user/self/requests/in'/>">Requests <span class="badge">${incomingRequestsCount}</span></a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -50,9 +50,32 @@
                                 <td class="id">${request.id}</td>
                                 <td>${request.disk.title}</td>
                                 <td class="owner">${request.disk.owner.username}</td>
-                                <td class="status">${request.status}</td>
-                                <td class="request">                                      
-                                    <span class="glyphicon glyphicon-remove btn-cancel"></span>
+                                <td class="status">
+                                    <c:choose>
+                                        <c:when test="${request.status == 'ACCEPTED'}">
+                                            <span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>
+                                        </c:when>
+                                        <c:when test="${request.status == 'REJECTED'}">
+                                            <span class="glyphicon glyphicon-remove-sign" style="color:red;"></span>
+                                        </c:when>
+                                        <c:when test="${request.status == 'REQUESTED'}">
+                                            <span class="glyphicon glyphicon-question-sign" style="color:blue;"></span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${request.status}
+                                        </c:otherwise>                                            
+                                    </c:choose>                                
+                                </td>
+                                <td class="request"> 
+                                    <c:choose>
+                                        <c:when test="${selection == 'IN'}">
+                                            <span id="btn-accept" class="glyphicon glyphicon-thumbs-up"></span>&nbsp;&nbsp;
+                                            <span id="btn-reject" class="glyphicon glyphicon-thumbs-down"></span>                                            
+                                        </c:when>
+                                        <c:when test="${selection == 'OUT'}">                                            
+                                            <span id="btn-cancel" class="glyphicon glyphicon-remove"></span>
+                                        </c:when>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:if>
@@ -60,7 +83,7 @@
                 </tbody>    
             </table>
 
-            
+
         </div>
         <script>
             var contextPath = '<%= request.getContextPath()%>';

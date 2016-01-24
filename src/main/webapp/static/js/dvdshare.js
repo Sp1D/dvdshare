@@ -44,18 +44,49 @@ $(function () {
 
 // Обработка нажатий на кнопки отмены запроса диска на своей странице
 
-    $('.tbl-requests .btn-cancel').click(function () {
+    $('.tbl-requests #btn-cancel').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
         var row = $(this).parents('tr').children('td');
-        $.post(contextPath + "/rest/request/delete/", data, function (request) {
-            if (request.status === "CANCELLED") {
-                row.fadeOut('fast',function(){
+        $.post(contextPath + "/rest/request/delete/", data, function (response) {
+            if (response.status === "CANCELLED") {
+                row.fadeOut('fast', function () {
                     $(row).remove();
-                });
-//                $(this).parents('tr').remove();
+                });                
+            }
+        });
+    });
+
+    $('.tbl-requests #btn-reject').click(function () {
+        var data = {
+            _csrf: csrf.toString(),
+            id: $(this).parents('tr').children('.id').html()
+        };
+        var btnreject = $(this);
+        var btnaccept = $(this).siblings('#btn-accept');
+        var tdstatus = $(this).parents('tr').children('.status');
+        $.post(contextPath + "/rest/request/reject/", data, function (response) {
+            if (response.status === "REJECTED") {                
+                var icon = '<span class="glyphicon glyphicon-remove-sign" style="color:red;"></span>';
+                tdstatus.html(icon);
+            }
+        });
+    });
+
+    $('.tbl-requests #btn-accept').click(function () {
+        var data = {
+            _csrf: csrf.toString(),
+            id: $(this).parents('tr').children('.id').html()
+        };
+        var btnreject = $(this);
+        var btnaccept = $(this).siblings('#btn-accept');
+        var tdstatus = $(this).parents('tr').children('.status');
+        $.post(contextPath + "/rest/request/accept/", data, function (response) {
+            if (response.status === "ACCEPTED") {
+                var icon = '<span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>';
+                tdstatus.html(icon);
             }
         });
     });
@@ -63,17 +94,17 @@ $(function () {
 // Обработка нажатий на кнопки запроса диска и отмены запроса
 // на странице другого пользователя
 
-    $('.tbl-mydisks .btn-request').click(function () {
+    $('.tbl-mydisks #btn-request').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
         var btnreq = $(this);
-        var btncancel = $(this).siblings('.btn-cancel-disabled');
+        var btncancel = $(this).siblings('#btn-cancel');
         $.post(contextPath + "/rest/request/create/", data, function (response) {
             if (response.status === "REQUESTED") {
-                btnreq.addClass('.btn-request-disabled').removeClass('.btn-request');
-                btncancel.addClass('.btn-cancel').removeClass('.btn-cancel-disabled');
+                btnreq.addClass('btn-disabled');
+                btncancel.removeClass('btn-disabled');
             }
         });
     });
@@ -102,4 +133,27 @@ $(function () {
             $('#tab-out').toggleClass('active');
             break;
     }
+
+    $('table.tbl-requests td.status').each(function(){
+        
+        switch ($(this).html()) {
+            case "REJECTED" :                
+                $(this).siblings('td.request').children('#btn-accept').addClass('btn-disabled');
+                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
+                break;
+            case "ACCEPTED" :                 
+                $(this).append('&nbsp<span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>');
+                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
+                $(this).siblings('td.request').children('#btn-reject').addClass('btn-disabled');
+                break;
+            case "REQUESTED" :
+                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
+                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
+                break;
+        }
+    });
+
+
+
+
 });

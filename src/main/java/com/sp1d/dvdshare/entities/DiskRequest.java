@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +33,9 @@ import javax.persistence.UniqueConstraint;
 @NamedQueries({
         @NamedQuery(name = "ALL", query = "SELECT dr FROM DiskRequest dr ORDER BY dr.id DESC"),
         @NamedQuery(name = "OUT", query = "SELECT dr FROM DiskRequest dr WHERE dr.user = :user ORDER BY dr.id DESC"),
+        @NamedQuery(name = "IN", query = "SELECT dr FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
+        @NamedQuery(name = "COUNT-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
+        @NamedQuery(name = "COUNT-NEW-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user AND dr.status = 'REQUESTED'"),
 
 })
 public class DiskRequest implements Serializable {
@@ -42,6 +47,7 @@ public class DiskRequest implements Serializable {
     @Column(name = "req_id", nullable = false)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "req_status", nullable = false)
     private Status status;
 

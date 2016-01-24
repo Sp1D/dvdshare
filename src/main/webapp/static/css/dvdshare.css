@@ -40,34 +40,38 @@ table.tbl-requests .id {
     white-space: nowrap;
 }
 
-table.tbl-requests .owner, .status, .request {
+table.tbl-requests .owner  {
     width: 1%;
     white-space: nowrap;
 }
 
-table.tbl-requests .request {
+table.tbl-requests .request, .status {
     width: 1%;
     white-space: nowrap;
     text-align: center;
 }
 
-.btn-request {
+#btn-request {
     color:  #66cc00;
     cursor: pointer;
 }
 
-.btn-cancel {
+#btn-cancel {
     color:  #ff3300;
     cursor: pointer;
 }
 
-.btn-request-disabled {
+#btn-accept, #btn-reject {
+    color:  #02749c;
+    cursor: pointer;
+}
+
+#btn-cancel.btn-disabled, #btn-request.btn-disabled, 
+#btn-reject.btn-disabled, #btn-accept.btn-disabled {
     color:  #999999;    
 }
 
-.btn-cancel-disabled {
-    color:  #999999;    
-}
+
 
 /* Override of bootstrap class */
 .page-header { 

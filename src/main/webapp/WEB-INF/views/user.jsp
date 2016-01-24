@@ -19,7 +19,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="<c:url value='/user/self'/>">Home</a></li>
                         <li class="active"><a href="<c:url value='/users'/>">Other users</a></li>
-                        <li><a href="<c:url value='/user/self/requests/out'/>">Requests</a></li> 
+                        <li><a href="<c:url value='/user/self/requests/in'/>">Requests <span class="badge">${incomingRequestsCount}</span></a></li> 
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -28,7 +28,10 @@
                 </div>
             </nav>
             <div class="page-header">
-                <h1>${user.username}</h1>                
+                <h1>${user.username}</h1>
+                <c:if test="${userPrincipal == user}">
+                    <p>Oops, it is you!</p>
+                </c:if>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
                 <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/${user.id}/own"/>">His own disks</a></li>
@@ -46,22 +49,19 @@
                 </thead>
                 <tbody>
                     <c:forEach var="disk" items="${disks}">
-                        <c:if test="${disk.id != null}">
-                            ${disk.id}:
-                            ${disk.title}:
-                        ${disk.request}<br>
+                        <c:if test="${disk.id != null}">                           
                             <tr>
                                 <td class="id">${disk.id}</td>
                                 <td class="request">
-                                    <c:if test="${disk.owner == user && disk.holder == user}">                                        
+                                    <c:if test="${disk.owner == user && disk.holder == user && userPrincipal != user}">                                        
                                         <c:choose>
                                             <c:when test="${f:colcontains(requests, disk.request)}">
-                                                <span class="glyphicon glyphicon-ok btn-request-disabled"></span>    
-                                                <span class="glyphicon glyphicon-remove btn-cancel"></span>
+                                                <span id="btn-request" class="glyphicon glyphicon-ok btn-disabled"></span>    
+                                                <span id="btn-cancel" class="glyphicon glyphicon-remove"></span>
                                             </c:when>
                                             <c:otherwise>
-                                                <span class="glyphicon glyphicon-ok btn-request"></span>    
-                                                <span class="glyphicon glyphicon-remove btn-cancel-disabled"></span>
+                                                <span id="btn-request" class="glyphicon glyphicon-ok"></span>    
+                                                <span id="btn-cancel" class="glyphicon glyphicon-remove btn-disabled"></span>
                                             </c:otherwise>
                                         </c:choose>                                        
                                     </c:if>

@@ -60,6 +60,18 @@ public class DiskRequestService {
         return diskRequests;
     }
 
+    public long countByUser(RequestSelection selection, User user) {
+        LOG.debug("finding count of diskRequests by user {}", user);
+        long diskRequests = diskRequestRepo.count(selection, user);
+        return diskRequests;
+    }
+
+    public long countNewIncomingByUser(RequestSelection selection, User user) {
+        LOG.debug("finding count of new incoming diskRequests by user {}", user);
+        long diskRequests = diskRequestRepo.countNewIncoming(selection, user);
+        return diskRequests;
+    }
+
     public List<DiskRequest> findAll() {
         LOG.debug("finding all diskRequests");
         List<DiskRequest> diskRequests = diskRequestRepo.find(RequestSelection.ALL);
@@ -68,15 +80,15 @@ public class DiskRequestService {
 
     public boolean contains(DiskRequest diskRequest) {
         LOG.debug("finding if particular request {} is contains in table", diskRequest);
-        
+
         return diskRequestRepo.contains(diskRequest);
     }
 
     public void delete(DiskRequest diskRequest) {
         LOG.debug("deleting request {}", diskRequest);
-        
+
         diskRequest.getDisk().setRequest(null);
-        diskRepo.save(diskRequest.getDisk());       
+        diskRepo.save(diskRequest.getDisk());
         diskRequest = diskRequestRepo.save(diskRequest);
         diskRequestRepo.delete(diskRequest);
     }

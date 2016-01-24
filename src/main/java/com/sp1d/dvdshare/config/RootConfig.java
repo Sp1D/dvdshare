@@ -59,15 +59,13 @@ public class RootConfig {
         va.setDatabase(Database.HSQL);
         va.setDatabasePlatform("org.hibernate.dialect.HSQLDialect");
         va.setGenerateDdl(true);
-        va.setShowSql(true);
+        va.setShowSql(false);
         emf.setJpaVendorAdapter(va);
 
         emf.setDataSource(dataSource());
         emf.setPackagesToScan("com.sp1d.dvdshare.entities");
         emf.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
-//        Properties jpaProperties = new Properties();
-//        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");
-//        emf.setJpaProperties(jpaProperties);
+
 
 //        initDatabase();
         return emf;

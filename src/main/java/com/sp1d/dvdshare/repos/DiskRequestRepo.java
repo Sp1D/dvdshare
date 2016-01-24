@@ -44,12 +44,24 @@ public class DiskRequestRepo {
         return q.getResultList();
     }
 
+    public long count(RequestSelection selection, User user) {
+        Query q = em.createNamedQuery("COUNT-"+selection.toString(), Long.class);
+        q.setParameter("user", user);
+        return (long)q.getSingleResult();
+    }
+
+    public long countNewIncoming(RequestSelection selection, User user) {
+        Query q = em.createNamedQuery("COUNT-NEW-IN", Long.class);
+        q.setParameter("user", user);
+        return (long)q.getSingleResult();
+    }
+
     public DiskRequest add(DiskRequest t) {
         em.persist(t);
         return em.merge(t);
     }
 
-    public DiskRequest save(DiskRequest t) {        
+    public DiskRequest save(DiskRequest t) {
         return em.merge(t);
     }
 
