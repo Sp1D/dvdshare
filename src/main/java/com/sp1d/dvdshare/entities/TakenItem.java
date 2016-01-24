@@ -5,6 +5,8 @@
  */
 package com.sp1d.dvdshare.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sp1d.dvdshare.service.UserSerializer;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -13,7 +15,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,8 +28,9 @@ import javax.persistence.UniqueConstraint;
  *
  * @author sp1d
  */
+@NamedQuery(name = "DISK-ID", query = "SELECT ti FROM TakenItem ti WHERE ti.disk.id = :id")
 @Entity
-@Table(name = "takenitems", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","disk_id"}))
+@Table(name = "takenitems", uniqueConstraints = @UniqueConstraint(columnNames = {"ti_user","ti_disk"}))
 public class TakenItem implements Serializable {
     private static final long serialVersionUID = -7111578635890472013L;
 
@@ -34,13 +40,18 @@ public class TakenItem implements Serializable {
     @Column(name = "ti_id", nullable = false)
     long id;
 
+    @JsonSerialize(using = UserSerializer.class)
     @ManyToOne
+    @JoinColumn(name = "ti_user")
     User user;
 
+    @JsonSerialize(using = UserSerializer.class)
     @ManyToOne
+    @JoinColumn(name = "ti_owner")
     User owner;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "ti_disk")
     Disk disk;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -87,7 +98,7 @@ public class TakenItem implements Serializable {
         this.date = date;
     }
 
-    
+
 
     @Override
     public int hashCode() {

@@ -41,6 +41,11 @@ public class TakenItemService {
         return repo.save(item);
     }
 
+    public TakenItem findByDiskId(long diskId) {
+        LOG.debug("finding takenItem by disk's ID {}", diskId);
+        return repo.findByDiskId(diskId);
+    }
+
 //    public TakenItem findById(long id) {
 //        LOG.debug("finding takenItem by ID {}", id);
 //        return repo.findById(id);

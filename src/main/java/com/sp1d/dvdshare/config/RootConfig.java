@@ -58,7 +58,7 @@ public class RootConfig {
         HibernateJpaVendorAdapter va = new HibernateJpaVendorAdapter();
         va.setDatabase(Database.HSQL);
         va.setDatabasePlatform("org.hibernate.dialect.HSQLDialect");
-        va.setGenerateDdl(true);
+        va.setGenerateDdl(false);
         va.setShowSql(false);
         emf.setJpaVendorAdapter(va);
 
@@ -66,25 +66,21 @@ public class RootConfig {
         emf.setPackagesToScan("com.sp1d.dvdshare.entities");
         emf.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
 
-
-//        initDatabase();
+        initDatabase();
         return emf;
     }
 
     private void initDatabase() {
         int existingTables = 0;
 
-        try (   Statement st = dataSource().getConnection().createStatement();
-                ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='PUBLIC'")
-                ) {
+        try (Statement st = dataSource().getConnection().createStatement();
+                ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='PUBLIC'")) {
 
             rs.next();
             existingTables = rs.getInt(1);
         } catch (SQLException ex) {
             LOG.fatal(ex);
-        } finally {
-
-        }
+        } 
 
         if (existingTables == 0) {
             LOG.debug("Database seems to be empty. Trying to fill it");

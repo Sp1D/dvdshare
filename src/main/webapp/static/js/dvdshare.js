@@ -41,6 +41,21 @@ $(function () {
             addDiskByForm();
         }
     });
+    
+    $('.tbl-mydisks #btn-return').click(function () {
+        var data = {
+            _csrf: csrf.toString(),
+            id: $(this).parents('tr').children('.id').html()
+        };        
+        var row = $(this).parents('tr').children('td');        
+        $.post(contextPath + "/rest/take/back", data, function (response) {
+            if (response.holder.id === response.owner.id) {
+                row.fadeOut('fast', function () {
+                    $(row).remove();
+                });
+            }
+        });
+    });
 
 // Обработка нажатий на кнопки отмены запроса диска на своей странице
 
@@ -90,6 +105,24 @@ $(function () {
             }
         });
     });
+    
+    $('.tbl-requests #btn-take').click(function () {
+        var data = {
+            _csrf: csrf.toString(),
+            id: $(this).parents('tr').children('.id').html()
+        };        
+        var row = $(this).parents('tr').children('td');
+        var title = $(this).parents('tr').children('.title').html();
+        $.post(contextPath + "/rest/take/", data, function (response) {
+            if (response.disk.title === title) {
+                row.fadeOut('fast', function () {
+                    $(row).remove();
+                });
+            }
+        });
+    });
+    
+    
 
 // Обработка нажатий на кнопки запроса диска и отмены запроса
 // на странице другого пользователя
@@ -134,24 +167,24 @@ $(function () {
             break;
     }
 
-    $('table.tbl-requests td.status').each(function(){
-        
-        switch ($(this).html()) {
-            case "REJECTED" :                
-                $(this).siblings('td.request').children('#btn-accept').addClass('btn-disabled');
-                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
-                break;
-            case "ACCEPTED" :                 
-                $(this).append('&nbsp<span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>');
-                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
-                $(this).siblings('td.request').children('#btn-reject').addClass('btn-disabled');
-                break;
-            case "REQUESTED" :
-                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
-                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
-                break;
-        }
-    });
+//    $('table.tbl-requests td.status').each(function(){
+//        
+//        switch ($(this).html()) {
+//            case "REJECTED" :                
+//                $(this).siblings('td.request').children('#btn-accept').addClass('btn-disabled');
+//                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
+//                break;
+//            case "ACCEPTED" :                 
+//                $(this).append('&nbsp<span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>');
+//                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
+//                $(this).siblings('td.request').children('#btn-reject').addClass('btn-disabled');
+//                break;
+//            case "REQUESTED" :
+//                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
+//                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
+//                break;
+//        }
+//    });
 
 
 

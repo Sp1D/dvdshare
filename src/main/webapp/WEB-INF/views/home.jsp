@@ -39,6 +39,7 @@
                     <tr>
                         <th class="id">#</th>
                         <th>Title</th>                            
+                        <th class="return"></th>
                         <th class="owner">Owner</th>
                         <th class="holder">Holder</th>
                     </tr>
@@ -49,6 +50,11 @@
                             <tr>
                                 <td class="id">${disk.id}</td>
                                 <td>${disk.title}</td>
+                                <td class="return">
+                                    <c:if test="${selection == 'TAKEN'}">
+                                        <a id="btn-return" href="#">return</a>
+                                    </c:if>
+                                </td>
                                 <td class="owner">${disk.owner.username}</td>
                                 <td class="holder">${disk.holder.username}</td>
                             </tr>

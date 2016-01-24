@@ -25,7 +25,7 @@ table.tbl-mydisks .request {
     text-align: center;
 }
 
-table.tbl-mydisks .holder, .owner {
+table.tbl-mydisks .holder, .owner, .return {
     width: 1%;
     white-space: nowrap;
 }

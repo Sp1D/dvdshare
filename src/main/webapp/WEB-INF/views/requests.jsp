@@ -49,16 +49,13 @@
                         <c:if test="${request.id != null}">
                             <tr>
                                 <td class="id">${request.id}</td>
-                                <td>${request.disk.title}
-
-                                </td>                                
+                                <td class="title">${request.disk.title}</td>                                
                                 <td class="take">
                                     <c:choose>
                                         <c:when test="${selection == 'OUT' && request.status == 'ACCEPTED'}">                                            
                                             <a id="btn-take" href="#">Take</a>
                                         </c:when>                                        
                                     </c:choose>
-
                                 </td>
                                 <td class="owner">${request.disk.owner.username}</td>
                                 <td class="status">
