@@ -50,10 +50,20 @@ public class UserController {
         User userPrincipal = userService.getPrincipal(req);
         if (userPrincipal != null) {
             model.addAttribute("incomingRequestsCount",
-                    diskRequestService.countNewIncomingByUser(RequestSelection.IN , userPrincipal));
+                    diskRequestService.countNewIncomingByUser(RequestSelection.IN, userPrincipal));
         }
         model.addAttribute("users", userService.findAll());
         return "users";
+    }
+
+//    Страница со списком всех дисков
+    @RequestMapping(path = "/users/disks", method = RequestMethod.GET)
+    String showAllDisks(Model model, HttpServletRequest req) {
+        LOG.debug("entering controller at GET /users/disks");
+
+        User userPrincipal = userService.getPrincipal(req);
+        setDiskModel(userPrincipal, userPrincipal, model, DiskSelection.FOREIGN);
+        return "disks";
     }
 
 //    Страница конкретного пользователя ( с набором данных по умолчанию )
@@ -118,32 +128,27 @@ public class UserController {
 
     private Model setDiskModel(long id, HttpServletRequest req, Model model, String whose) {
         User user = userService.findById(id);
-        User principal = null;
-        if (req.getUserPrincipal() != null) {
-            principal = userService.findByEmail(req.getUserPrincipal().getName());
-        }
-        return setDiskModel(principal, user, model, whose);
+        User userPrincipal = userService.getPrincipal(req);
+        return setDiskModel(userPrincipal, user, model, resolveSelection(whose));
     }
 
     private Model setDiskModel(HttpServletRequest req, Model model, String whose) {
-        User principal = null;
-        if (req.getUserPrincipal() != null) {
-            principal = userService.findByEmail(req.getUserPrincipal().getName());
-        }
-        return setDiskModel(principal, principal, model, whose);
+        User userPrincipal = userService.getPrincipal(req);
+        return setDiskModel(userPrincipal, userPrincipal, model, resolveSelection(whose));
     }
 
-    private Model setDiskModel(User userPrincipal, User user, Model model, String whose) {
+
+
+/*
+ *   userPrincipal - пользователь, от чьего имени пришел запрос.
+    user - пользователь, относительно которого требуется поиск дисков,
+    например взятые им диски, отданные им, или не принадлежащие ему(DiskSelection.FOREIGN)
+    selection - набор данных, который должен быть сформирован
+ */
+
+    private Model setDiskModel(User userPrincipal, User user, Model model, DiskSelection selection) {
         if (user != null) {
             List<Disk> disks;
-            DiskSelection selection = DiskSelection.OWN;
-            if (whose != null) {
-                try {
-                    selection = DiskSelection.valueOf(whose.toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    selection = DiskSelection.OWN;
-                }
-            }
 
             disks = diskService.findByUser(selection, user);
             model.addAttribute("userPrincipal", userPrincipal);
@@ -151,9 +156,22 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("disks", disks);
             model.addAttribute("requests", diskRequestService.findAll());
+            model.addAttribute("principalRequests", diskRequestService.findByUser(RequestSelection.OUT, userPrincipal));
             model.addAttribute("incomingRequestsCount", diskRequestService.countNewIncomingByUser(RequestSelection.IN, userPrincipal));
         }
         return model;
+    }
+
+    private DiskSelection resolveSelection(String whose) {
+        DiskSelection selection = DiskSelection.OWN;
+        if (whose != null) {
+            try {
+                selection = DiskSelection.valueOf(whose.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                selection = DiskSelection.OWN;
+            }
+        }
+        return selection;
     }
 
 }

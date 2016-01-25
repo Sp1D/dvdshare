@@ -5,6 +5,7 @@
  */
 package com.sp1d.dvdshare.service;
 
+import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.repos.DiskRepo;
@@ -70,6 +71,11 @@ public class DiskRequestService {
     public boolean contains(DiskRequest diskRequest) {
         LOG.debug("finding if particular request {} is contains in table", diskRequest);
         return diskRequestRepo.contains(diskRequest);
+    }
+
+   public boolean containsDisk(Disk disk) {
+        LOG.debug("finding if request for disk {} is contains in table", disk);
+        return diskRequestRepo.containsDisk(disk);
     }
 
     public void delete(DiskRequest diskRequest) {

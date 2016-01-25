@@ -11,6 +11,7 @@ import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.DiskRequestService;
 import com.sp1d.dvdshare.service.DiskService;
 import com.sp1d.dvdshare.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
@@ -43,24 +43,25 @@ public class RestRequestController {
 
     @RequestMapping(path = "create", method = RequestMethod.POST)
     @ResponseBody
-    DiskRequest createRequest(@RequestParam("id") long diskId) {
+    DiskRequest createRequest(@RequestParam("id") long diskId, HttpServletRequest req) {
         LOG.debug("entering controller POST /rest/request/create/{}", diskId);
 
         DiskRequest diskRequest;
 
-        User user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        User userPrincipal = userService.getPrincipal(req);
         Disk disk = diskService.findById(diskId);
 
-        if (disk != null && user != null) {
+        if (disk != null && userPrincipal != null && disk.getHolder().equals(disk.getOwner())
+                && !diskRequestService.containsDisk(disk)) {
             diskRequest = new DiskRequest();
             diskRequest.setStatus(DiskRequest.Status.REQUESTED);
             diskRequest.setDisk(disk);
-            diskRequest.setUser(user);
-            if (!diskRequestService.contains(diskRequest)) {
-                diskRequest = diskRequestService.add(diskRequest);
-                disk.setRequest(diskRequest);
-                diskService.save(disk);
-            }
+            diskRequest.setUser(userPrincipal);
+            diskRequest = diskRequestService.add(diskRequest);
+            
+            disk.setRequest(diskRequest);
+            diskService.save(disk);
+
         } else {
             diskRequest = new DiskRequest();
             diskRequest.setStatus(DiskRequest.Status.CANCELLED);
@@ -118,5 +119,5 @@ public class RestRequestController {
         }
         return diskRequest;
     }
-    
+
 }

@@ -140,7 +140,7 @@
                 <version>9.3.6.v20151106</version>
                 <configuration>		
                     <webApp>		                      
-                        <contextPath>/dvd</contextPath>
+                        <!--<contextPath>/dvd</contextPath>-->
                     </webApp>	 
                 </configuration>
             </plugin>

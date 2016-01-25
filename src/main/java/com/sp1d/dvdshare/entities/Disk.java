@@ -35,7 +35,8 @@ import org.apache.logging.log4j.Logger;
     @NamedQuery(name = "OWN", query = "SELECT d FROM Disk d WHERE d.owner = :user"),
     @NamedQuery(name = "HOLD", query = "SELECT d FROM Disk d WHERE d.holder = :user"),
     @NamedQuery(name = "GIVEN", query = "SELECT d FROM Disk d WHERE d.owner = :user AND d.holder != :user"),
-    @NamedQuery(name = "TAKEN", query = "SELECT d FROM Disk d WHERE d.owner != :user AND d.holder = :user")
+    @NamedQuery(name = "TAKEN", query = "SELECT d FROM Disk d WHERE d.owner != :user AND d.holder = :user"),
+    @NamedQuery(name = "FOREIGN", query = "SELECT d FROM Disk d WHERE d.owner != :user")
 })
 
 public class Disk implements Serializable {
@@ -65,6 +66,7 @@ public class Disk implements Serializable {
 
     @JsonIgnore
     @OneToOne
+    @JoinColumn(name = "disk_request")
     private DiskRequest request;
 
     public long getId() {

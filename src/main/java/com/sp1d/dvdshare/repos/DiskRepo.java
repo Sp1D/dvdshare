@@ -26,12 +26,12 @@ public class DiskRepo {
     @PersistenceContext
     EntityManager em;
 
-    public List<Disk> findByUser(DiskSelection dataSelection, User user) {
+    public List<Disk> findUniversalByUser(DiskSelection dataSelection, User user) {
         Query q = em.createNamedQuery(dataSelection.toString());
         q.setParameter("user", user);
         return q.getResultList();
     }
-    
+
     public Disk findById(long id) {
         return em.find(Disk.class, id);
     }

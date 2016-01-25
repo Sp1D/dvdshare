@@ -29,13 +29,15 @@ import javax.persistence.UniqueConstraint;
  * @author che
  */
 @Entity
-@Table(name = "requests", uniqueConstraints = @UniqueConstraint(columnNames = {"req_user","req_disk"}))
+@Table(name = "requests")
+//uniqueConstraints = @UniqueConstraint(columnNames = {"req_user","req_disk"})
 @NamedQueries({
         @NamedQuery(name = "ALL", query = "SELECT dr FROM DiskRequest dr ORDER BY dr.id DESC"),
         @NamedQuery(name = "OUT", query = "SELECT dr FROM DiskRequest dr WHERE dr.user = :user ORDER BY dr.id DESC"),
         @NamedQuery(name = "IN", query = "SELECT dr FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
         @NamedQuery(name = "COUNT-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
         @NamedQuery(name = "COUNT-NEW-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user AND dr.status = 'REQUESTED'"),
+        @NamedQuery(name = "COUNT-BYDISK", query = "SELECT COUNT(dr) FROM DiskRequest dr WHERE dr.disk = :disk")
 
 })
 public class DiskRequest implements Serializable {
@@ -52,7 +54,7 @@ public class DiskRequest implements Serializable {
     private Status status;
 
     @OneToOne
-    @JoinColumn(name = "req_disk")
+    @JoinColumn(name = "req_disk", unique = true)
     private Disk disk;
 
     @JsonSerialize(using = UserSerializer.class)

@@ -27,8 +27,9 @@
             <div class="page-header">
                 <h1>Users list</h1>
             </div>            
-            <ul id="tabs" class="nav nav-tabs">
-                <li id="tab-allusers" role="presentation" class="active"><a href="#">All users</a></li>                
+            <ul id="tabs" class="nav nav-tabs">                
+                <li id="tab-allusers" role="presentation" class="active"><a href="<c:url value='/users'/>">All users</a></li>                
+                <li id="tab-alldisks" role="presentation"><a href="<c:url value='/users/disks'/>">All disks</a></li>                
             </ul>
             <table class="table tbl-users">
                 <thead>

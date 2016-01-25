@@ -80,7 +80,7 @@ public class RootConfig {
             existingTables = rs.getInt(1);
         } catch (SQLException ex) {
             LOG.fatal(ex);
-        } 
+        }
 
         if (existingTables == 0) {
             LOG.debug("Database seems to be empty. Trying to fill it");

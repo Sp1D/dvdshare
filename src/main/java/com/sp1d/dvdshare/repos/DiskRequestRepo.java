@@ -5,6 +5,7 @@
  */
 package com.sp1d.dvdshare.repos;
 
+import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.service.RequestSelection;
@@ -31,6 +32,12 @@ public class DiskRequestRepo {
 
     public boolean contains(DiskRequest diskRequest) {
         return em.contains(diskRequest);
+    }
+
+    public boolean containsDisk(Disk disk) {
+        Query q = em.createNamedQuery("COUNT-BYDISK", DiskRequest.class);
+        q.setParameter("disk", disk);
+        return (int)q.getSingleResult() != 0;
     }
 
     public List<DiskRequest> find(RequestSelection selection) {

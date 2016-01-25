@@ -51,6 +51,10 @@ table.tbl-requests .request, .status, .take {
     cursor: pointer;
 }
 
+#btn-request-dis {
+    color:  #999999;    
+}
+
 #btn-cancel {
     color:  #ff3300;
     cursor: pointer;
@@ -63,8 +67,10 @@ table.tbl-requests .request, .status, .take {
 
 #btn-cancel.btn-disabled, #btn-request.btn-disabled, 
 #btn-reject.btn-disabled, #btn-accept.btn-disabled {
-    color:  #999999;    
+    color:  #999999;  
+    cursor: auto;
 }
+
 
 
 

@@ -46,13 +46,14 @@ public class DiskService {
         return diskRepo.findById(id);
     }
 
+
     public List<Disk> findByUser(DiskSelection dataSelection, User user) {
         return findByUser(dataSelection, user, Disk.Field.ID);
     }
 
     public List<Disk> findByUser(DiskSelection dataSelection, User user, Disk.Field sort) {
         LOG.debug("finding disks selection {}, by user {}, sorted by {}", dataSelection, user, sort);
-        List<Disk> disks = diskRepo.findByUser(dataSelection, user);
+        List<Disk> disks = diskRepo.findUniversalByUser(dataSelection, user);
         disks.sort(new DiskComparator(sort));
         return disks;
     }
