@@ -43,11 +43,11 @@ public class RootConfig {
 
     private static final Logger LOG = LogManager.getLogger(RootConfig.class);
 
+//        Настройки берутся из classpath:c3p0.properties
     @Bean
     DataSource dataSource() {
-//        Настройки берутся из classpath:c3p0.properties
         ComboPooledDataSource ds = new ComboPooledDataSource();
-        LOG.debug("DataSource is set: {}", ds);
+//        LOG.debug("DataSource is set: {}", ds);
 //        com.mchange.v2.log.MLog.getLogger().setLevel(MLevel.OFF);
         return ds;
     }
