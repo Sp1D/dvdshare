@@ -53,7 +53,8 @@
         </div>
         <script>
             var contextPath = '<%= request.getContextPath()%>';
-            var csrf = '<c:out value="${_csrf.token}"/>';            
+            var csrf = '<c:out value="${_csrf.token}"/>';  
+            var ds = '<c:out value="${selection}"/>';
         </script> 
         <script src="<c:url value='/static/js/jquery-1.12.0.min.js'/>"></script>
         <script src="<c:url value='/static/js/bootstrap.min.js'/>"></script>        

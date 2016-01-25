@@ -53,7 +53,7 @@
                                 <td class="take">
                                     <c:choose>
                                         <c:when test="${selection == 'OUT' && request.status == 'ACCEPTED'}">                                            
-                                            <a id="btn-take" href="#">Take</a>
+                                            <a class="btn-take" href="#">Take</a>
                                         </c:when>                                        
                                     </c:choose>
                                 </td>
@@ -77,11 +77,11 @@
                                 <td class="request"> 
                                     <c:choose>
                                         <c:when test="${selection == 'IN'}">
-                                            <span id="btn-accept" class="glyphicon glyphicon-thumbs-up"></span>&nbsp;&nbsp;
-                                            <span id="btn-reject" class="glyphicon glyphicon-thumbs-down"></span>                                            
+                                            <span class="glyphicon glyphicon-thumbs-up btn-accept"></span>&nbsp;&nbsp;
+                                            <span class="glyphicon glyphicon-thumbs-down btn-reject"></span>                                            
                                         </c:when>
                                         <c:when test="${selection == 'OUT'}">                                            
-                                            <span id="btn-cancel" class="glyphicon glyphicon-remove"></span>
+                                            <span class="glyphicon glyphicon-remove btn-cancel"></span>
                                         </c:when>
                                     </c:choose>
                                 </td>
@@ -96,7 +96,7 @@
         <script>
             var contextPath = '<%= request.getContextPath()%>';
             var csrf = '<c:out value="${_csrf.token}"/>';
-            var dataSelection = '<c:out value="${selection}"/>';
+            var ds = '<c:out value="${selection}"/>';
         </script> 
         <script src="<c:url value='/static/js/jquery-1.12.0.min.js'/>"></script>
         <script src="<c:url value='/static/js/bootstrap.min.js'/>"></script>        

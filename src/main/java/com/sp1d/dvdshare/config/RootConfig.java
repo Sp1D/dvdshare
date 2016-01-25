@@ -42,9 +42,11 @@ public class RootConfig {
     Environment env;
 
     private static final Logger LOG = LogManager.getLogger(RootConfig.class);
+/*
+ * Настройки берутся из classpath:c3p0.properties
+ */
 
-//        Настройки берутся из classpath:c3p0.properties
-    @Bean
+   @Bean
     DataSource dataSource() {
         ComboPooledDataSource ds = new ComboPooledDataSource();
 //        LOG.debug("DataSource is set: {}", ds);
@@ -66,6 +68,9 @@ public class RootConfig {
         emf.setPackagesToScan("com.sp1d.dvdshare.entities");
         emf.setPersistenceUnitName("com.sp1d.dvdshare_PU0");
 
+/*
+ * Инициализация БД из скриптов
+ */
         initDatabase();
         return emf;
     }

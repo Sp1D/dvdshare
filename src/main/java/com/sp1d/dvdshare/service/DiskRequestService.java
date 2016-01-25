@@ -53,6 +53,11 @@ public class DiskRequestService {
         return diskRequestRepo.find(selection, user);
     }
 
+    public DiskRequest findByDiskId(long diskId) {
+        LOG.debug("finding diskRequest by disk ID {}", diskId);
+        return diskRequestRepo.findByDiskId(diskId);
+    }
+
     public long countByUser(RequestSelection selection, User user) {
         LOG.debug("finding count of diskRequests by user {}", user);
         return diskRequestRepo.count(selection, user);

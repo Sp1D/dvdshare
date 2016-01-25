@@ -43,7 +43,7 @@ $(function () {
         }
     });
 
-    $('.tbl-mydisks #btn-return:not(.btn-disabled)').click(function () {
+    $('.tbl-mydisks span.btn-return').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
@@ -60,7 +60,7 @@ $(function () {
 
 // Обработка нажатий на кнопки отмены запроса диска на своей странице
 
-    $('.tbl-requests #btn-cancel:not(.btn-disabled)').click(function () {
+    $('.tbl-requests span.btn-cancel').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
@@ -75,13 +75,13 @@ $(function () {
         });
     });
 
-    $('.tbl-requests #btn-reject:not(.btn-disabled)').click(function () {
+    $('.tbl-requests span.btn-reject').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
         var btnreject = $(this);
-        var btnaccept = $(this).siblings('#btn-accept');
+        var btnaccept = $(this).siblings('btn-accept');
         var tdstatus = $(this).parents('tr').children('.status');
         $.post(contextPath + "/rest/request/reject/", data, function (response) {
             if (response.status === "REJECTED") {
@@ -91,13 +91,13 @@ $(function () {
         });
     });
 
-    $('.tbl-requests #btn-accept:not(.btn-disabled)').click(function () {
+    $('.tbl-requests span.btn-accept').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
         var btnreject = $(this);
-        var btnaccept = $(this).siblings('#btn-accept');
+        var btnaccept = $(this).siblings('btn-accept');
         var tdstatus = $(this).parents('tr').children('.status');
         $.post(contextPath + "/rest/request/accept/", data, function (response) {
             if (response.status === "ACCEPTED") {
@@ -107,7 +107,7 @@ $(function () {
         });
     });
 
-    $('.tbl-requests #btn-take:not(.btn-disabled)').click(function () {
+    $('.tbl-requests a.btn-take').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
@@ -128,24 +128,41 @@ $(function () {
 // Обработка нажатий на кнопки запроса диска и отмены запроса
 // на странице другого пользователя
 
-    $('.tbl-mydisks #btn-request:not(.btn-disabled)').click(function () {
+    $('.tbl-mydisks span.btn-request').click(function () {
+        if ($(this).hasClass('btn-disabled')) return ;
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
         var btnreq = $(this);
-        var btncancel = $(this).siblings('#btn-cancel');
+        var btncancel = $(this).siblings('.btn-cancel');        
         $.post(contextPath + "/rest/request/create/", data, function (response) {
             if (response.status === "REQUESTED") {
                 btnreq.addClass('btn-disabled');
-                btncancel.removeClass('btn-disabled');
+                btncancel.removeClass('btn-disabled');                
             }
         });
     });
+    
+    $('.tbl-mydisks span.btn-cancel').click(function () { 
+        if ($(this).hasClass('btn-disabled')) return ;
+        var data = {
+            _csrf: csrf.toString(),
+            id: $(this).parents('tr').children('.id').html()
+        };
+        var btncancel = $(this);
+        var btnreq = $(this).siblings('.btn-request');
+        $.post(contextPath + "/rest/request/delete/bydisk", data, function (response) {
+            if (response.status === "CANCELLED") {
+                btnreq.removeClass('btn-disabled');
+                btncancel.addClass('btn-disabled');
+            }
+        });
+    });$.cl
 
 
 //  Установка активной вкладки
-
+    var dataSelection = ds;
     if (dataSelection !== null) {
         $('#tabs li').removeClass('active');
         switch (dataSelection) {
@@ -169,25 +186,6 @@ $(function () {
                 break;
         }
     }
-
-//    $('table.tbl-requests td.status').each(function(){
-//        
-//        switch ($(this).html()) {
-//            case "REJECTED" :                
-//                $(this).siblings('td.request').children('#btn-accept').addClass('btn-disabled');
-//                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
-//                break;
-//            case "ACCEPTED" :                 
-//                $(this).append('&nbsp<span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>');
-//                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
-//                $(this).siblings('td.request').children('#btn-reject').addClass('btn-disabled');
-//                break;
-//            case "REQUESTED" :
-//                $(this).siblings('td.request').children('#btn-accept').removeClass('btn-disabled');
-//                $(this).siblings('td.request').children('#btn-reject').removeClass('btn-disabled');
-//                break;
-//        }
-//    });
 
 
 

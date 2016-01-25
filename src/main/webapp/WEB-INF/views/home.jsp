@@ -27,6 +27,7 @@
             </nav>
             <div class="page-header">
                 <h1>Hello,<br>${user.username}!</h1>
+                <p>It's, like, all yours! Well, not all of them exactly.</p>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
                 <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/self"/>">My own disks</a></li>
@@ -94,7 +95,7 @@
         <script>
             var contextPath = '<%= request.getContextPath()%>';
             var csrf = '<c:out value="${_csrf.token}"/>';
-            var dataSelection = '<c:out value="${selection}"/>';
+            var ds = '<c:out value="${selection}"/>';
         </script> 
         <script src="<c:url value='/static/js/jquery-1.12.0.min.js'/>"></script>
         <script src="<c:url value='/static/js/bootstrap.min.js'/>"></script>        

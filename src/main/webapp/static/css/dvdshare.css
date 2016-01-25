@@ -46,32 +46,31 @@ table.tbl-requests .request, .status, .take {
     text-align: center;    
 }
 
-#btn-request {
+.btn-request {
     color:  #66cc00;
     cursor: pointer;
 }
 
-#btn-request-dis {
-    color:  #999999;    
-}
-
-#btn-cancel {
+.btn-cancel {
     color:  #ff3300;
     cursor: pointer;
 }
 
-#btn-accept, #btn-reject {
+.btn-accept, .btn-reject {
     color:  #02749c;
     cursor: pointer;
 }
 
-#btn-cancel.btn-disabled, #btn-request.btn-disabled, 
+/*#btn-cancel.btn-disabled, #btn-request.btn-disabled, 
 #btn-reject.btn-disabled, #btn-accept.btn-disabled {
     color:  #999999;  
     cursor: auto;
+}*/
+
+.btn-disabled {
+    color:  #999999;  
+    cursor: auto;
 }
-
-
 
 
 /* Override of bootstrap class */

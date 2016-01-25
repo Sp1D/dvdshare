@@ -37,7 +37,8 @@ import javax.persistence.UniqueConstraint;
         @NamedQuery(name = "IN", query = "SELECT dr FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
         @NamedQuery(name = "COUNT-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
         @NamedQuery(name = "COUNT-NEW-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user AND dr.status = 'REQUESTED'"),
-        @NamedQuery(name = "COUNT-BYDISK", query = "SELECT COUNT(dr) FROM DiskRequest dr WHERE dr.disk = :disk")
+        @NamedQuery(name = "COUNT-BYDISK", query = "SELECT COUNT(dr) FROM DiskRequest dr WHERE dr.disk = :disk"),
+        @NamedQuery(name = "BYDISK", query = "SELECT dr FROM DiskRequest dr WHERE dr.disk.id = :diskid")
 
 })
 public class DiskRequest implements Serializable {

@@ -65,8 +65,7 @@ public class Disk implements Serializable {
     private User holder;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "disk_request")
+    @OneToOne(mappedBy = "disk")
     private DiskRequest request;
 
     public long getId() {

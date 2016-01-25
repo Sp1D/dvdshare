@@ -32,6 +32,7 @@
                 <c:if test="${userPrincipal == user}">
                     <p>Oops, it is you!</p>
                 </c:if>
+                    <p><a href="<c:url value='/users'/>">Want go back to users list?</a></p>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
                 <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/${user.id}/own"/>">His own disks</a></li>
@@ -53,18 +54,25 @@
                             <tr>
                                 <td class="id">${disk.id}</td>
                                 <td class="request">
-                                    <c:if test="${disk.owner == user && disk.holder == user && userPrincipal != user}">                                        
-                                        <c:choose>
-                                            <c:when test="${f:colcontains(requests, disk.request)}">
-                                                <span id="btn-request" class="glyphicon glyphicon-ok btn-disabled"></span>    
-                                                <span id="btn-cancel" class="glyphicon glyphicon-remove"></span>
+                                    
+                                    <c:if test="${disk.owner == disk.holder && userPrincipal != user}">                                        
+                                        <c:choose>                                            
+                                            <c:when test="${f:colcontains(requests, disk.request) && !f:colcontains(principalRequests, disk.request)}">
+                                                <span class="glyphicon glyphicon-ok btn-request btn-disabled"></span>    
+                                                <span class="glyphicon glyphicon-remove btn-cancel btn-disabled"></span>
                                             </c:when>
+                                            
+                                            <c:when test="${f:colcontains(requests, disk.request) && f:colcontains(principalRequests, disk.request)}">
+                                                <span class="glyphicon glyphicon-ok btn-request btn-disabled"></span>    
+                                                <span class="glyphicon glyphicon-remove btn-cancel"></span>
+                                            </c:when>
+                                                
                                             <c:otherwise>
-                                                <span id="btn-request" class="glyphicon glyphicon-ok"></span>    
-                                                <span id="btn-cancel" class="glyphicon glyphicon-remove btn-disabled"></span>
+                                                <span class="glyphicon glyphicon-ok btn-request"></span>    
+                                                <span class="glyphicon glyphicon-remove btn-cancel btn-disabled"></span>
                                             </c:otherwise>
                                         </c:choose>                                        
-                                    </c:if>
+                                    </c:if>    
                                 </td>
                                 <td>${disk.title}</td>
                                 <td class="owner">${disk.owner.username}</td>
@@ -79,7 +87,7 @@
         <script>
             var contextPath = '<%= request.getContextPath()%>';
             var csrf = '<c:out value="${_csrf.token}"/>';
-            var dataSelection = '<c:out value="${selection}"/>';
+            var ds = '<c:out value="${selection}"/>';
         </script> 
         <script src="<c:url value='/static/js/jquery-1.12.0.min.js'/>"></script>
         <script src="<c:url value='/static/js/bootstrap.min.js'/>"></script>        

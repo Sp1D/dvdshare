@@ -58,7 +58,7 @@ public class RestRequestController {
             diskRequest.setDisk(disk);
             diskRequest.setUser(userPrincipal);
             diskRequest = diskRequestService.add(diskRequest);
-            
+
             disk.setRequest(diskRequest);
             diskService.save(disk);
 
@@ -77,6 +77,24 @@ public class RestRequestController {
 
         User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         DiskRequest diskRequest = diskRequestService.findById(reqId);
+
+        if (userPrincipal != null && diskRequest != null
+                && diskRequest.getUser().equals(userPrincipal)) {
+//            Реквест в этом статусе последний раз увидит получатель json.
+//              это сигнал, что реквест удален
+            diskRequest.setStatus(DiskRequest.Status.CANCELLED);
+            diskRequestService.delete(diskRequest);
+        }
+        return diskRequest;
+    }
+
+    @RequestMapping(path = "delete/bydisk", method = RequestMethod.POST)
+    @ResponseBody
+    DiskRequest deleteRequestByDisk(@RequestParam("id") long diskId) {
+        LOG.debug("entering controller POST /rest/request/delete/bydisk/{}", diskId);
+
+        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        DiskRequest diskRequest = diskRequestService.findByDiskId(diskId);
 
         if (userPrincipal != null && diskRequest != null
                 && diskRequest.getUser().equals(userPrincipal)) {

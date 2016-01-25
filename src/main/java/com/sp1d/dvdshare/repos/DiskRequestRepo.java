@@ -25,19 +25,24 @@ public class DiskRequestRepo {
     @PersistenceContext
     EntityManager em;
 
-    public DiskRequest findById(long id) {
-        return em.find(DiskRequest.class, id);
-    }
-
-
     public boolean contains(DiskRequest diskRequest) {
         return em.contains(diskRequest);
     }
 
     public boolean containsDisk(Disk disk) {
-        Query q = em.createNamedQuery("COUNT-BYDISK", DiskRequest.class);
+        Query q = em.createNamedQuery("COUNT-BYDISK");
         q.setParameter("disk", disk);
-        return (int)q.getSingleResult() != 0;
+        return ((Long)q.getSingleResult()) != 0;
+    }
+
+    public DiskRequest findByDiskId(long diskId) {
+        Query q = em.createNamedQuery("BYDISK", DiskRequest.class);
+        q.setParameter("diskid", diskId);
+        return (DiskRequest) q.getSingleResult();
+    }
+
+    public DiskRequest findById(long id) {
+        return em.find(DiskRequest.class, id);
     }
 
     public List<DiskRequest> find(RequestSelection selection) {
