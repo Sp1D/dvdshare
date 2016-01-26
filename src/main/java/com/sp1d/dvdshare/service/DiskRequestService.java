@@ -26,6 +26,9 @@ public class DiskRequestService {
     @Autowired
     DiskRepo diskRepo;
 
+    @Autowired
+    UserService userService;
+
     private static final Logger LOG = LogManager.getLogger(DiskRequestService.class);
 
     public DiskRequest add(DiskRequest request) {
@@ -78,13 +81,36 @@ public class DiskRequestService {
         return diskRequestRepo.containsDisk(disk);
     }
 
-    public void delete(DiskRequest diskRequest) {
+    public DiskRequest delete(DiskRequest diskRequest) {
         LOG.debug("deleting request {}", diskRequest);
 
-        diskRequest.getDisk().setRequest(null);
-        diskRepo.save(diskRequest.getDisk());
-        diskRequest = diskRequestRepo.save(diskRequest);
-        diskRequestRepo.delete(diskRequest);
+        User userPrincipal = userService.getPrincipal();
+
+        if (userPrincipal != null && diskRequest != null
+                && diskRequest.getUser().equals(userPrincipal)) {
+//            Реквест в этом статусе последний раз увидит получатель json.
+//              это сигнал, что реквест удален
+            diskRequest.setStatus(DiskRequest.Status.CANCELLED);
+
+            diskRequest.getDisk().setRequest(null);
+            diskRepo.save(diskRequest.getDisk());
+
+            diskRequest = diskRequestRepo.save(diskRequest);
+            diskRequestRepo.delete(diskRequest);
+        }
+        return diskRequest;
+
     }
 
+    public DiskRequest setRequestStatus(long reqId, DiskRequest.Status status) {
+        User userPrincipal = userService.getPrincipal();
+        DiskRequest diskRequest = findById(reqId);
+
+        if (userPrincipal != null && diskRequest != null
+                && diskRequest.getDisk().getOwner().equals(userPrincipal)) {
+            diskRequest.setStatus(status);
+            diskRequest = save(diskRequest);
+        }
+        return diskRequest;
+    }
 }

@@ -7,31 +7,25 @@ import com.sp1d.dvdshare.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
+/*
+ *  Контроллер для операций с объектами Disk
  *
  * @author sp1d
  */
 @Controller
 @RequestMapping("/disk")
-public class RestDiskController {
+public class DiskController {
 
     @Autowired
     DiskService diskService;
 
     @Autowired
     UserService userService;
-
-    @RequestMapping(path = "create", method = RequestMethod.GET)
-    String create(Model model) {
-        model.addAttribute("disk", new Disk());
-        return "disk_create";
-    }
 
     @RequestMapping(path = "create", method = RequestMethod.POST)
     @ResponseBody

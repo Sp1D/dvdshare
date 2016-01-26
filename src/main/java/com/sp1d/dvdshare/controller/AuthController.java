@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
+/*
+ *  Контроллер отвечает за вход в систему, выход из неё и регистрацию новых
+ * пользователей
  *
  * @author sp1d
  */
@@ -47,7 +49,7 @@ public class AuthController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/login?logout";
+        return "redirect:/login";
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.GET)
@@ -57,6 +59,9 @@ public class AuthController {
         return "register";
     }
 
+/*
+ *  Регистрация пользователя. Учетная запись, прошедшая валидацию, сохраняется в БД
+ */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     String register(User user, BindingResult result) {
         LOG.debug("entering controller at POST /register");

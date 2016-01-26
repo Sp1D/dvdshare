@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
+/*
+ * Создание, удаление запросов на взятие диска. Смена статуса запросов. В каждом
+ * случае измененный объект запроса возвращается в виде объекта JSON
  *
  * @author che
  */
 @Controller
 @RequestMapping(path = "/rest/request")
-public class RestRequestController {
+public class DiskRequestController {
 
     @Autowired
     DiskService diskService;
@@ -34,8 +36,13 @@ public class RestRequestController {
     @Autowired
     DiskRequestService diskRequestService;
 
-    private static final Logger LOG = LogManager.getLogger(RestRequestController.class);
+    private static final Logger LOG = LogManager.getLogger(DiskRequestController.class);
 
+    /*
+     * Создание запроса. Объект запроса возвращается со статусом REQUESTED в
+     * виде JSON. В случае неудачи при создании, возвращается объект со статусом
+     * CANCELLED
+     */
     @RequestMapping(path = "create", method = RequestMethod.POST)
     @ResponseBody
     DiskRequest createRequest(@RequestParam("id") long diskId, HttpServletRequest req) {
@@ -65,72 +72,51 @@ public class RestRequestController {
         return diskRequest;
     }
 
+    /*
+     * Удаление запроса по ID запроса
+     */
     @RequestMapping(path = "delete", method = RequestMethod.POST)
     @ResponseBody
     DiskRequest deleteRequest(@RequestParam("id") long reqId) {
         LOG.debug("entering controller POST /rest/request/delete/{}", reqId);
 
-        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         DiskRequest diskRequest = diskRequestService.findById(reqId);
-
-        if (userPrincipal != null && diskRequest != null
-                && diskRequest.getUser().equals(userPrincipal)) {
-//            Реквест в этом статусе последний раз увидит получатель json.
-//              это сигнал, что реквест удален
-            diskRequest.setStatus(DiskRequest.Status.CANCELLED);
-            diskRequestService.delete(diskRequest);
-        }
-        return diskRequest;
+        return diskRequestService.delete(diskRequest);
     }
 
+    /*
+     * Удаление запроса по ID диска
+     */
     @RequestMapping(path = "delete/bydisk", method = RequestMethod.POST)
     @ResponseBody
     DiskRequest deleteRequestByDisk(@RequestParam("id") long diskId) {
         LOG.debug("entering controller POST /rest/request/delete/bydisk/{}", diskId);
 
-        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         DiskRequest diskRequest = diskRequestService.findByDiskId(diskId);
+        return diskRequestService.delete(diskRequest);
 
-        if (userPrincipal != null && diskRequest != null
-                && diskRequest.getUser().equals(userPrincipal)) {
-//            Реквест в этом статусе последний раз увидит получатель json.
-//              это сигнал, что реквест удален
-            diskRequest.setStatus(DiskRequest.Status.CANCELLED);
-            diskRequestService.delete(diskRequest);
-        }
-        return diskRequest;
     }
 
+    /*
+     * Установка запросу статуса REJECTED
+     */
     @RequestMapping(path = "reject", method = RequestMethod.POST)
     @ResponseBody
     DiskRequest rejectRequest(@RequestParam("id") long reqId) {
         LOG.debug("entering controller POST /rest/request/reject/{}", reqId);
 
-        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        DiskRequest diskRequest = diskRequestService.findById(reqId);
-
-        if (userPrincipal != null && diskRequest != null
-                && diskRequest.getDisk().getOwner().equals(userPrincipal)) {
-            diskRequest.setStatus(DiskRequest.Status.REJECTED);
-            diskRequest = diskRequestService.save(diskRequest);
-        }
-        return diskRequest;
+        return diskRequestService.setRequestStatus(reqId, DiskRequest.Status.REJECTED);
     }
 
+    /*
+     * Установка запросу статуса ACCEPTED
+     */
     @RequestMapping(path = "accept", method = RequestMethod.POST)
     @ResponseBody
     DiskRequest acceptRequest(@RequestParam("id") long reqId) {
         LOG.debug("entering controller POST /rest/request/accept/{}", reqId);
 
-        User userPrincipal = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        DiskRequest diskRequest = diskRequestService.findById(reqId);
-
-        if (userPrincipal != null && diskRequest != null
-                && diskRequest.getDisk().getOwner().equals(userPrincipal)) {
-            diskRequest.setStatus(DiskRequest.Status.ACCEPTED);
-            diskRequest = diskRequestService.save(diskRequest);
-        }
-        return diskRequest;
+        return diskRequestService.setRequestStatus(reqId, DiskRequest.Status.ACCEPTED);
     }
 
 }
