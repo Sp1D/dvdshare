@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
+/*
+ * Контроллер для создания и уничтожения объектов TakenItem.
+ * Взять диск можно только через запрос к владельцу, поэтому и контроллер требует
+ * указание идентификатора запроса при взятии диска. Сведения о запрашивающем лице, самом диске
+ * при этом берутся из запроса.
  *
  * @author sp1d
  */

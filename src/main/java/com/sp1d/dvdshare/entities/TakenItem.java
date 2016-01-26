@@ -19,7 +19,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-/**
+/*
+ *  Объект TakenItem существует только во время нахождения диска не у владельца.
+ * Непосредственно за хранение сведений о владельце диска, держателе диска отвечает
+ * сам объект диска Disk. Однако TakenItem может использоваться для контроля даты-времени
+ * взятия, истории обмена диском (если не удалять ненужные объекты TakenItem, как это
+ * делается сейчас)
  *
  * @author sp1d
  */

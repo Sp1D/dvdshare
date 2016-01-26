@@ -12,21 +12,19 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-/**
+/*
+ * Пользователь системы. В связке имя-пароль используются поля email, password.
+ * Поля plainPassword и plainPasswordCheck нигде не хранятся, очищаются при записи
+ * пользователя в базу, используются для приема пароля из формы.
  *
  * @author sp1d
  */
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
-
     private static final long serialVersionUID = -4674771583377131450L;
 
-    @Transient
-    private static final Logger LOG = LogManager.getLogger(User.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

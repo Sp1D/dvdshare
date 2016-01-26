@@ -1,12 +1,12 @@
 
 package com.sp1d.dvdshare.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,9 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
+/*
+ * Основной файл конфигурации. Бины доступные для всех контекстов.
+ * БД инициализируется при первом запуске скриптами, указанными в application.properties
  *
  * @author sp1d
  */
@@ -38,15 +40,15 @@ public class RootConfig {
     Environment env;
 
     private static final Logger LOG = LogManager.getLogger(RootConfig.class);
-/*
- * Настройки берутся из classpath:c3p0.properties
- */
+
 
    @Bean
     DataSource dataSource() {
-        ComboPooledDataSource ds = new ComboPooledDataSource();
-//        LOG.debug("DataSource is set: {}", ds);
-//        com.mchange.v2.log.MLog.getLogger().setLevel(MLevel.OFF);
+        BasicDataSource ds = new BasicDataSource();
+        ds.setUrl(env.getProperty("db.conn.jdbcUrl"));
+        ds.setUsername(env.getProperty("db.conn.user"));
+        ds.setPassword(env.getProperty("db.conn.password"));
+        ds.setDriverClassName(env.getProperty("db.conn.driverClass"));
         return ds;
     }
 

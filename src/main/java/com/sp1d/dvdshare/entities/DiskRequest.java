@@ -18,13 +18,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-/**
+/*
+ * Объект-запрос на диск. Может существовать в единственном экземпляре для каждого из дисков.
+ * Нельзя запросить один диск дважды. Состояние запроса отражается в поле status.
  *
  * @author che
  */
 @Entity
 @Table(name = "requests")
-//uniqueConstraints = @UniqueConstraint(columnNames = {"req_user","req_disk"})
 @NamedQueries({
     @NamedQuery(name = "ALL", query = "SELECT dr FROM DiskRequest dr ORDER BY dr.id DESC"),
     @NamedQuery(name = "OUT", query = "SELECT dr FROM DiskRequest dr WHERE dr.user = :user ORDER BY dr.id DESC"),

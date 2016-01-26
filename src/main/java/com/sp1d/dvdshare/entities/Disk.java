@@ -20,7 +20,10 @@ import javax.persistence.Transient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
+/*
+ * Объект Disk хранит в себе не только данные самого диска, но и ссылку на владельца диска,
+ * ссылку на текущего держателя диска. Для упрощения поиска запросов на диск, имеется
+ * также поле, ссылающееся на объект запроса.
  *
  * @author sp1d
  */

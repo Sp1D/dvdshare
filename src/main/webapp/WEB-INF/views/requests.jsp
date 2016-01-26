@@ -39,6 +39,7 @@
                         <th class="id">Req. #</th>
                         <th>Title</th>                   
                         <th></th>
+                        <th class="requester">Requester</th>                        
                         <th class="owner">Owner</th>                        
                         <th class="status">Status</th>                        
                         <th class="request">Request</th>
@@ -57,6 +58,7 @@
                                         </c:when>                                        
                                     </c:choose>
                                 </td>
+                                <td class="requester">${request.user.username}</td>
                                 <td class="owner">${request.disk.owner.username}</td>
                                 <td class="status">
                                     <c:choose>

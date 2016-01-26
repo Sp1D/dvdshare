@@ -24,7 +24,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <button type="submit" class="btn btn-success btn-login">Login</button>
                 </form>
-                <p style="padding-top: 5px;">Not registered, dude ?&nbsp;<a href="<c:url value="/register"/>">So sign up, yo!</a></p>
+                <p style="padding-top: 5px;">Not registered?&nbsp;<a href="<c:url value="/register"/>">So sign up, yo!</a></p>
                 <p class="form-error"><c:out value="${error}"/></p>
             </div>
         </div>

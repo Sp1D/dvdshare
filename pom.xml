@@ -62,12 +62,12 @@
         </dependency>                        
         
         <!--DATABASE-->
-        
+                
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>${hibernate.version}</version>            
-        </dependency>   
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1.1</version>            
+        </dependency>
              
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -142,6 +142,9 @@
                     <webApp>		                      
                         <!--<contextPath>/dvd</contextPath>-->
                     </webApp>	 
+<!--                    <httpConnector>
+                        <port>8080</port>
+                    </httpConnector>-->
                 </configuration>
             </plugin>
             <plugin>
