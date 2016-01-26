@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.repos;
 
 import com.sp1d.dvdshare.entities.Disk;
@@ -32,7 +27,7 @@ public class DiskRequestRepo {
     public boolean containsDisk(Disk disk) {
         Query q = em.createNamedQuery("COUNT-BYDISK");
         q.setParameter("disk", disk);
-        return ((Long)q.getSingleResult()) != 0;
+        return ((Long) q.getSingleResult()) != 0;
     }
 
     public DiskRequest findByDiskId(long diskId) {
@@ -57,15 +52,15 @@ public class DiskRequestRepo {
     }
 
     public long count(RequestSelection selection, User user) {
-        Query q = em.createNamedQuery("COUNT-"+selection.toString(), Long.class);
+        Query q = em.createNamedQuery("COUNT-" + selection.toString(), Long.class);
         q.setParameter("user", user);
-        return (long)q.getSingleResult();
+        return (long) q.getSingleResult();
     }
 
     public long countNewIncoming(RequestSelection selection, User user) {
         Query q = em.createNamedQuery("COUNT-NEW-IN", Long.class);
         q.setParameter("user", user);
-        return (long)q.getSingleResult();
+        return (long) q.getSingleResult();
     }
 
     public DiskRequest add(DiskRequest t) {

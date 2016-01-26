@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -30,10 +25,10 @@ import javax.persistence.UniqueConstraint;
  */
 @NamedQuery(name = "DISK-ID", query = "SELECT ti FROM TakenItem ti WHERE ti.disk.id = :id")
 @Entity
-@Table(name = "takenitems", uniqueConstraints = @UniqueConstraint(columnNames = {"ti_user","ti_disk"}))
+@Table(name = "takenitems", uniqueConstraints = @UniqueConstraint(columnNames = {"ti_user", "ti_disk"}))
 public class TakenItem implements Serializable {
-    private static final long serialVersionUID = -7111578635890472013L;
 
+    private static final long serialVersionUID = -7111578635890472013L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,8 +93,6 @@ public class TakenItem implements Serializable {
         this.date = date;
     }
 
-
-
     @Override
     public int hashCode() {
         int hash = 5;
@@ -130,10 +123,5 @@ public class TakenItem implements Serializable {
         }
         return true;
     }
-
-
-
-
-
 
 }

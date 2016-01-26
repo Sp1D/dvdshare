@@ -30,8 +30,8 @@
                 <p>That is all active requests you made or received</p>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
-                <li id="tab-in" role="presentation" class="active"><a href="<c:url value="/user/self/requests/in"/>">Incoming</a></li>
-                <li id="tab-out" role="presentation" class="active"><a href="<c:url value="/user/self/requests/out"/>">Outgoing</a></li>                
+                <li id="tab-in" role="presentation"><a href="<c:url value="/user/self/requests/in"/>">Incoming</a></li>
+                <li id="tab-out" role="presentation"><a href="<c:url value="/user/self/requests/out"/>">Outgoing</a></li>                
             </ul>
             <table class="table tbl-requests">
                 <thead>

@@ -35,7 +35,7 @@
                     <p><a href="<c:url value='/users'/>">Want go back to users list?</a></p>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
-                <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/${user.id}/own"/>">His own disks</a></li>
+                <li id="tab-own" role="presentation"><a href="<c:url value="/user/${user.id}/own"/>">His own disks</a></li>
                 <li id="tab-hold" role="presentation"><a href="<c:url value="/user/${user.id}/hold"/>">Disks on hands</a></li>                
             </ul>
             <table class="table tbl-mydisks">

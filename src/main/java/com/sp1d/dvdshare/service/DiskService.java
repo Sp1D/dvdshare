@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.service;
 
 import com.sp1d.dvdshare.entities.Disk;
 import com.sp1d.dvdshare.entities.User;
 import com.sp1d.dvdshare.repos.DiskRepo;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +39,6 @@ public class DiskService {
         return diskRepo.findById(id);
     }
 
-
     public List<Disk> findByUser(DiskSelection dataSelection, User user) {
         return findByUser(dataSelection, user, Disk.Field.ID);
     }
@@ -57,7 +49,6 @@ public class DiskService {
         disks.sort(new DiskComparator(sort));
         return disks;
     }
-
 
     class DiskComparator implements Comparator<Disk> {
 

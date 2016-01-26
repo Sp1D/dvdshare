@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.controller;
 
 import com.sp1d.dvdshare.entities.Disk;
@@ -32,15 +27,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(path = "/rest/take")
 public class TakenItemController {
 
-    @Autowired UserService userService;
-    @Autowired DiskRequestService diskRequestService;
-    @Autowired TakenItemService takenItemService;
-    @Autowired DiskService diskService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    DiskRequestService diskRequestService;
+    @Autowired
+    TakenItemService takenItemService;
+    @Autowired
+    DiskService diskService;
 
     private static final Logger LOG = LogManager.getLogger(TakenItemController.class);
 
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody TakenItem takeItem(@RequestParam("id") long reqId, HttpServletRequest req){
+    @ResponseBody
+    TakenItem takeItem(@RequestParam("id") long reqId, HttpServletRequest req) {
         LOG.debug("entering controller at POST /rest/take");
 
         User userPrincipal = userService.getPrincipal(req);
@@ -69,7 +69,8 @@ public class TakenItemController {
     }
 
     @RequestMapping(path = "back", method = RequestMethod.POST)
-    @ResponseBody Disk returnItem(@RequestParam("id") long diskId, HttpServletRequest req){
+    @ResponseBody
+    Disk returnItem(@RequestParam("id") long diskId, HttpServletRequest req) {
         LOG.debug("entering controller at POST /rest/take/back");
 
         User userPrincipal = userService.getPrincipal(req);

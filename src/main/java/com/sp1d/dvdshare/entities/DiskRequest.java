@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -32,13 +26,13 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "requests")
 //uniqueConstraints = @UniqueConstraint(columnNames = {"req_user","req_disk"})
 @NamedQueries({
-        @NamedQuery(name = "ALL", query = "SELECT dr FROM DiskRequest dr ORDER BY dr.id DESC"),
-        @NamedQuery(name = "OUT", query = "SELECT dr FROM DiskRequest dr WHERE dr.user = :user ORDER BY dr.id DESC"),
-        @NamedQuery(name = "IN", query = "SELECT dr FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
-        @NamedQuery(name = "COUNT-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
-        @NamedQuery(name = "COUNT-NEW-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user AND dr.status = 'REQUESTED'"),
-        @NamedQuery(name = "COUNT-BYDISK", query = "SELECT COUNT(dr) FROM DiskRequest dr WHERE dr.disk = :disk"),
-        @NamedQuery(name = "BYDISK", query = "SELECT dr FROM DiskRequest dr WHERE dr.disk.id = :diskid")
+    @NamedQuery(name = "ALL", query = "SELECT dr FROM DiskRequest dr ORDER BY dr.id DESC"),
+    @NamedQuery(name = "OUT", query = "SELECT dr FROM DiskRequest dr WHERE dr.user = :user ORDER BY dr.id DESC"),
+    @NamedQuery(name = "IN", query = "SELECT dr FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
+    @NamedQuery(name = "COUNT-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user"),
+    @NamedQuery(name = "COUNT-NEW-IN", query = "SELECT COUNT(dr) FROM DiskRequest dr JOIN dr.disk d JOIN d.owner o WHERE o = :user AND dr.status = 'REQUESTED'"),
+    @NamedQuery(name = "COUNT-BYDISK", query = "SELECT COUNT(dr) FROM DiskRequest dr WHERE dr.disk = :disk"),
+    @NamedQuery(name = "BYDISK", query = "SELECT dr FROM DiskRequest dr WHERE dr.disk.id = :diskid")
 
 })
 public class DiskRequest implements Serializable {
@@ -62,7 +56,6 @@ public class DiskRequest implements Serializable {
     @ManyToOne
     @JoinColumn(name = "req_user")
     private User user;
-
 
     public long getId() {
         return id;
@@ -126,6 +119,5 @@ public class DiskRequest implements Serializable {
         }
         return true;
     }
-
 
 }

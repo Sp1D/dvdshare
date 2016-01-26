@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.service;
 
 import com.sp1d.dvdshare.entities.User;
@@ -13,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +22,10 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
-
 
     public List<User> findAll() {
         LOG.debug("finding all users");
@@ -73,7 +67,9 @@ public class UserService {
     public User getPrincipal(HttpServletRequest req) {
         if (req.getUserPrincipal() != null) {
             return findByEmail(req.getUserPrincipal().getName());
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
 }

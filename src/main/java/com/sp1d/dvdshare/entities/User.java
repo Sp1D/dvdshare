@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.entities;
 
 import java.io.Serializable;
@@ -26,9 +21,9 @@ import org.apache.logging.log4j.Logger;
  */
 @Entity
 @Table(name = "users")
-public class User implements Serializable{
-    private static final long serialVersionUID = -4674771583377131450L;
+public class User implements Serializable {
 
+    private static final long serialVersionUID = -4674771583377131450L;
 
     @Transient
     private static final Logger LOG = LogManager.getLogger(User.class);
@@ -123,8 +118,6 @@ public class User implements Serializable{
         this.requests = requests;
     }
 
-
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -151,7 +144,5 @@ public class User implements Serializable{
     public String toString() {
         return "User{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + "secret" + ", enabled=" + enabled + '}';
     }
-
-
 
 }

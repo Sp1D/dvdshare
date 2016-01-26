@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.service;
 
 import com.sp1d.dvdshare.entities.Disk;
@@ -78,7 +73,7 @@ public class DiskRequestService {
         return diskRequestRepo.contains(diskRequest);
     }
 
-   public boolean containsDisk(Disk disk) {
+    public boolean containsDisk(Disk disk) {
         LOG.debug("finding if request for disk {} is contains in table", disk);
         return diskRequestRepo.containsDisk(disk);
     }

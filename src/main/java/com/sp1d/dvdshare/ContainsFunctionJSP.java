@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare;
 
 import java.util.Collection;
@@ -14,9 +9,9 @@ import java.util.Collection;
 public class ContainsFunctionJSP {
 
     public static Boolean collectionContains(Collection collection, Object item) {
-        if (collection != null) {            
+        if (collection != null) {
             return collection.contains(item);
-        } else {            
+        } else {
             return false;
         }
     }

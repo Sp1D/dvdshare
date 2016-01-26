@@ -30,8 +30,8 @@
                 <p>It's, like, all yours! Well, not all of them exactly.</p>
             </div>            
             <ul id="tabs" class="nav nav-tabs">
-                <li id="tab-own" role="presentation" class="active"><a href="<c:url value="/user/self"/>">My own disks</a></li>
-                <li id="tab-hold" role="presentation" class="active"><a href="<c:url value="/user/self/hold"/>">Disks on hands</a></li>
+                <li id="tab-own" role="presentation"><a href="<c:url value="/user/self"/>">My own disks</a></li>
+                <li id="tab-hold" role="presentation"><a href="<c:url value="/user/self/hold"/>">Disks on hands</a></li>
                 <li id="tab-taken" role="presentation"><a href="<c:url value="/user/self/taken"/>">Taken disks</a></li>
                 <li id="tab-given" role="presentation"><a href="<c:url value='/user/self/given'/>">Given disks</a></li>                                
             </ul>
@@ -53,7 +53,7 @@
                                 <td>${disk.title}</td>
                                 <td class="return">
                                     <c:if test="${selection == 'TAKEN'}">
-                                        <a id="btn-return" href="#">return</a>
+                                        <a class="btn-return" href="#">return</a>
                                     </c:if>
                                 </td>
                                 <td class="owner">${disk.owner.username}</td>

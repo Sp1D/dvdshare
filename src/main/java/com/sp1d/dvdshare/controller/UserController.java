@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.controller;
 
 import com.sp1d.dvdshare.entities.Disk;
@@ -98,31 +93,32 @@ public class UserController {
         return "home";
     }
 
-//    Страница запросов залогиненного пользователя с указанным набором данных
+    /*
+     * Страница запросов залогиненного пользователя с указанным набором данных
+     * (входящие, исходящие запросы)
+     */
     @RequestMapping(path = "/user/self/requests/{select}")
     String showRequests(@PathVariable String select, Model model, HttpServletRequest req) {
         LOG.debug("entering controller at GET /user/self/requests/{}", select);
-        User userPrincipal = null;
-        if (req.getUserPrincipal() != null) {
 
-            userPrincipal = userService.findByEmail(req.getUserPrincipal().getName());
-            if (userPrincipal != null) {
-                RequestSelection selection = RequestSelection.IN;
-                if (select != null) {
-                    try {
-                        selection = RequestSelection.valueOf(select.toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        selection = RequestSelection.IN;
-                    }
+        User userPrincipal = userService.getPrincipal(req);
+        if (userPrincipal != null) {
+            RequestSelection selection = RequestSelection.IN;
+            if (select != null) {
+                try {
+                    selection = RequestSelection.valueOf(select.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    selection = RequestSelection.IN;
                 }
-                List<DiskRequest> requests = diskRequestService.findByUser(selection, userPrincipal);
-
-                model.addAttribute("userPrincipal", userPrincipal);
-                model.addAttribute("requests", requests);
-                model.addAttribute("selection", selection);
-                model.addAttribute("incomingRequestsCount", diskRequestService.countNewIncomingByUser(RequestSelection.IN, userPrincipal));
             }
+            List<DiskRequest> requests = diskRequestService.findByUser(selection, userPrincipal);
+
+            model.addAttribute("userPrincipal", userPrincipal);
+            model.addAttribute("requests", requests);
+            model.addAttribute("selection", selection);
+            model.addAttribute("incomingRequestsCount", diskRequestService.countNewIncomingByUser(RequestSelection.IN, userPrincipal));
         }
+
         return "requests";
     }
 
@@ -137,15 +133,13 @@ public class UserController {
         return setDiskModel(userPrincipal, userPrincipal, model, resolveSelection(whose));
     }
 
-
-
-/*
- *   userPrincipal - пользователь, от чьего имени пришел запрос.
-    user - пользователь, относительно которого требуется поиск дисков,
-    например взятые им диски, отданные им, или не принадлежащие ему(DiskSelection.FOREIGN)
-    selection - набор данных, который должен быть сформирован
- */
-
+    /*
+     * userPrincipal - пользователь, от чьего имени пришел запрос. user -
+     * пользователь, относительно которого требуется поиск дисков, например
+     * взятые им диски, отданные им, или не принадлежащие
+     * ему(DiskSelection.FOREIGN) selection - набор данных, который должен быть
+     * сформирован
+     */
     private Model setDiskModel(User userPrincipal, User user, Model model, DiskSelection selection) {
         if (user != null) {
             List<Disk> disks;

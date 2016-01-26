@@ -61,11 +61,6 @@ table.tbl-requests .request, .status, .take {
     cursor: pointer;
 }
 
-/*#btn-cancel.btn-disabled, #btn-request.btn-disabled, 
-#btn-reject.btn-disabled, #btn-accept.btn-disabled {
-    color:  #999999;  
-    cursor: auto;
-}*/
 
 .btn-disabled {
     color:  #999999;  
@@ -73,7 +68,7 @@ table.tbl-requests .request, .status, .take {
 }
 
 
-/* Override of bootstrap class */
+/* Перекрытие bootstrap.css */
 .page-header { 
     border-bottom: none;
 }

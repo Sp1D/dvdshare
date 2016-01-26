@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,8 +35,8 @@ import org.apache.logging.log4j.Logger;
 })
 
 public class Disk implements Serializable {
-    private static final long serialVersionUID = 123940492941695808L;
 
+    private static final long serialVersionUID = 123940492941695808L;
 
     @Transient
     private static final Logger LOG = LogManager.getLogger(Disk.class);
@@ -108,8 +103,6 @@ public class Disk implements Serializable {
         this.request = request;
     }
 
-
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -143,7 +136,6 @@ public class Disk implements Serializable {
         }
         return true;
     }
-
 
     public enum Field {
 

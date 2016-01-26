@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.service;
 
-import com.sp1d.dvdshare.entities.DiskRequest;
 import com.sp1d.dvdshare.entities.TakenItem;
-import com.sp1d.dvdshare.entities.User;
-import com.sp1d.dvdshare.repos.DiskRepo;
-import com.sp1d.dvdshare.repos.DiskRequestRepo;
 import com.sp1d.dvdshare.repos.TakenItemRepo;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +40,6 @@ public class TakenItemService {
 //        LOG.debug("finding takenItem by ID {}", id);
 //        return repo.findById(id);
 //    }
-
 //    public List<DiskRequest> findByUser(RequestSelection selection, User user) {
 //        LOG.debug("finding diskRequests by user {}", user);
 //        List<DiskRequest> diskRequests = diskRequestRepo.find(selection, user);
@@ -80,7 +69,6 @@ public class TakenItemService {
 //
 //        return diskRequestRepo.contains(diskRequest);
 //    }
-
     public void delete(TakenItem item) {
         LOG.debug("deleting takenItem {}", item);
 //        repo.save(item);

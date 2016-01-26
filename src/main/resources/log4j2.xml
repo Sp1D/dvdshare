@@ -9,7 +9,7 @@
     <Root level="error">
       <AppenderRef ref="Console"/>
     </Root>
-    <Logger name="com.sp1d.dvdshare" level="debug"/>
+    <Logger name="com.sp1d.dvdshare" level="error"/>
     <Logger name="org.hibernate" level="error"/>
     <Logger name="log4j.logger.com.mchange.v2.c3p0" level="error"/>
     

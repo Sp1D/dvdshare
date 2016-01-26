@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sp1d.dvdshare.service;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -22,7 +17,7 @@ public class UserSerializer extends JsonSerializer<User> {
     public void serialize(User user, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
         gen.writeNumberField("id", user.getId());
-        gen.writeStringField("username", user.getUsername());        
+        gen.writeStringField("username", user.getUsername());
         gen.writeEndObject();
     }
 

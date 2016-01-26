@@ -22,20 +22,15 @@ function addDiskByForm() {
 
 
 
-function cancelRequest(obj) {
-    var data = {
-        _csrf: csrf.toString(),
-        id: $(obj).parents('tr').children('.id').html()
-    };
-    $.post(contextPath + "/rest/request/delete/", data, function (request) {
-        if (request.status === 'CANCELLED') {
-
-        }
-    });
-}
-
 $(function () {
+    /*
+     * Кнопка добавления нового диска
+     */
     $('#btn-add-disk').click(addDiskByForm);
+    
+    /*
+     * Добавление диска по нажатию ENTER в форме
+     */
     $('#newdisk-title').keydown(function (event) {
         if (event.which === 13) {
             event.preventDefault();
@@ -43,7 +38,10 @@ $(function () {
         }
     });
 
-    $('.tbl-mydisks span.btn-return').click(function () {
+/*
+ * Кнопка возврата диска владельцу
+ */
+    $('.tbl-mydisks a.btn-return').click(function () {
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
@@ -58,7 +56,9 @@ $(function () {
         });
     });
 
-// Обработка нажатий на кнопки отмены запроса диска на своей странице
+/*
+ * Кнопка отмены (удаления) запроса со страницы запросов
+ */
 
     $('.tbl-requests span.btn-cancel').click(function () {
         var data = {
@@ -75,6 +75,9 @@ $(function () {
         });
     });
 
+/*
+ * Кнопка отказа для запроса (установка статуса REJECTED)
+ */
     $('.tbl-requests span.btn-reject').click(function () {
         var data = {
             _csrf: csrf.toString(),
@@ -91,6 +94,9 @@ $(function () {
         });
     });
 
+/*
+ * Кнопка подтверждения запроса (установка статуса ACCEPTED)
+ */
     $('.tbl-requests span.btn-accept').click(function () {
         var data = {
             _csrf: csrf.toString(),
@@ -107,6 +113,9 @@ $(function () {
         });
     });
 
+/*
+ * Кнопка взятия диска из подтвержденного запроса на странице запросов
+ */
     $('.tbl-requests a.btn-take').click(function () {
         var data = {
             _csrf: csrf.toString(),
@@ -123,29 +132,32 @@ $(function () {
         });
     });
 
-
-
-// Обработка нажатий на кнопки запроса диска и отмены запроса
-// на странице другого пользователя
-
+/*
+ * Кнопка запроса диска на странице пользователя или странице всех дисков
+ */
     $('.tbl-mydisks span.btn-request').click(function () {
-        if ($(this).hasClass('btn-disabled')) return ;
+        if ($(this).hasClass('btn-disabled'))
+            return;
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
         };
         var btnreq = $(this);
-        var btncancel = $(this).siblings('.btn-cancel');        
+        var btncancel = $(this).siblings('.btn-cancel');
         $.post(contextPath + "/rest/request/create/", data, function (response) {
             if (response.status === "REQUESTED") {
                 btnreq.addClass('btn-disabled');
-                btncancel.removeClass('btn-disabled');                
+                btncancel.removeClass('btn-disabled');
             }
         });
     });
-    
-    $('.tbl-mydisks span.btn-cancel').click(function () { 
-        if ($(this).hasClass('btn-disabled')) return ;
+
+/*
+ * Кнопка отмены запроса на странице пользователя или странице всех дисков
+ */
+    $('.tbl-mydisks span.btn-cancel').click(function () {
+        if ($(this).hasClass('btn-disabled'))
+            return;
         var data = {
             _csrf: csrf.toString(),
             id: $(this).parents('tr').children('.id').html()
@@ -158,36 +170,35 @@ $(function () {
                 btncancel.addClass('btn-disabled');
             }
         });
-    });$.cl
+    });
 
-
-//  Установка активной вкладки
+/*  Установка активной вкладки
+ *  Серверной стороной устанавливается значение выборки, которую
+ *  мы показываем для текущей страницы. Выборки обычно показаны на 
+ *  разных вкладках одной .jsp
+ */
     var dataSelection = ds;
-    if (dataSelection !== null) {
-        $('#tabs li').removeClass('active');
-        switch (dataSelection) {
-            case "OWN" :
-                $('#tab-own').toggleClass('active');
-                break;
-            case "HOLD" :
-                $('#tab-hold').toggleClass('active');
-                break;
-            case "TAKEN" :
-                $('#tab-taken').toggleClass('active');
-                break;
-            case "GIVEN" :
-                $('#tab-given').toggleClass('active');
-                break;
-            case "IN" :
-                $('#tab-in').toggleClass('active');
-                break;
-            case "OUT" :
-                $('#tab-out').toggleClass('active');
-                break;
-        }
+
+    switch (dataSelection) {
+        case "OWN" :
+            $('#tab-own').toggleClass('active');
+            break;
+        case "HOLD" :
+            $('#tab-hold').toggleClass('active');
+            break;
+        case "TAKEN" :
+            $('#tab-taken').toggleClass('active');
+            break;
+        case "GIVEN" :
+            $('#tab-given').toggleClass('active');
+            break;
+        case "IN" :
+            $('#tab-in').toggleClass('active');
+            break;
+        case "OUT" :
+            $('#tab-out').toggleClass('active');
+            break;
     }
-
-
 
 
 });
